@@ -170,34 +170,8 @@ public class Jdbc {
         }
     }
     public static void main(String[] args) throws SQLException {
-        String str = "select * from users";
-        String insert = "INSERT INTO `Users` (`username`, `password`) VALUES ('meaydin', 'meaydin')";
-        String update = "UPDATE `Users` SET `password`='eaydin' WHERE `username`='meaydin' ";
-        String db = "MyDB";
+ 
         
-        Jdbc jdbc = new Jdbc(str);
-        Connection conn = null;
-                try {
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-//Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:derby://localhost:1527/WEDA", "Username", "Root");
-//conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+db.trim(), "root", "");
-        }
-        catch(ClassNotFoundException | SQLException e){
-            
-        }
-        jdbc.connect(conn);
-        String [] users = {"eaydin","benim","benim"};
-        System.out.println(jdbc.retrieve(str));
-        if (!jdbc.exists(users[0]))
-            jdbc.insert(users);            
-        else {
-                jdbc.update(users);
-                System.out.println("user name exists, change to another");
-        }
-        jdbc.delete("aydinme");
         
-        System.out.println(jdbc.retrieve(str));
-        jdbc.closeAll();
     }            
 }
