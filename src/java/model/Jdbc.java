@@ -103,6 +103,22 @@ public class Jdbc {
         return makeTable(rsToList());//results;
     }
     
+    //Created boolean that takes username+pasword entry and validates against database
+    public boolean loginSuccess(String user, String password){
+        boolean bool = false;
+        try  {
+            select("select * from users");
+            while(rs.next()) {
+                if(rs.getString("username").equals(user) && rs.getString("password").equals(password)){
+                    return true;
+                }            
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return bool;
+    }
+    
     public boolean exists(String user) {
         boolean bool = false;
         try  {

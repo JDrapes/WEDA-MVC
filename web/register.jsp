@@ -3,8 +3,9 @@
     Created on : 11-Nov-2019, 15:34:12
     Author     : jordandraper
 --%>
-
+<%@page import="model.Jdbc"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -19,9 +20,22 @@
         <!-- Main css -->
         <link rel="stylesheet" href="css/style.css">
         <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        
+
     </head>
     <body>
+        <%! int i = 0;
+            String str = "Register";
+            String url = "NewUser.do";
+        %>
+        <%
+            if ((String) request.getAttribute("msg") == "del") {
+                str = "Delete";
+                url = "Delete.do";
+            } else {
+                str = "Register";
+                url = "NewUser.do";
+            }
+        %>
 
         <jsp:include page="/WEB-INF/navigationBar.jsp"/>
 
@@ -33,37 +47,42 @@
                     <div class="signup-content">
                         <div class="signup-form">
                             <h2 class="form-title">Register</h2>
-                            <form action="" method="POST" class="register-form" id="register-form">
+                            <form action="<%=url%>" method="POST" class="register-form" id="register-form">
                                 <div class="form-group">
-                                    <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                    <input type="text" name="name" id="name" placeholder="Your Name"/>
+                                    <label for="username"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                    <input type="text" name="username" id="name" placeholder="Your email"/>
                                 </div>
                                 <div class="form-group">
-                                    <label for="email"><i class="zmdi zmdi-email"></i></label>
-                                    <input type="email" name="email" id="email" placeholder="Your Email"/>
+                                    <label for="password"><i class="zmdi zmdi-email"></i></label>
+                                    <input type="password" name="password" id="email" placeholder="enter a password"/>
                                 </div>
                                 <div class="form-group">
-                                    <label for="dateofbirth"><i class="zmdi zmdi-airline-seat-individual-suite"></i></label>
-                                    <input type="text" name="dateofbirth" id="name" placeholder="Your Date of Birth - dd/mm/yyyy"/>
+                                    <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
+                                    <label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></label>
                                 </div>
-   
-                                    <div class="form-group">
-                                        <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
-                                        <label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></label>
-                                    </div>
-                                    <div class="form-group form-button">
-                                        <input type="submit" name="signup" id="signup" class="form-submit" value="Register"/>
-                                    </div>
+                                <div class="form-group form-button">
+                                    <input type="submit" name="signup" id="signup" class="form-submit" value="<%=str%>"/>
+                                </div>
                             </form>
                         </div>
-                        <div class="signup-image">
+                        <div class="signin-image">
                             <figure><img src="img/signup-image.jpg" alt="sign up image"></figure>
-                            <a href="login.jsp" class="signup-image-link">I am already member</a>
+                            <form method="POST" action="AdminService.do">
+                                <input name="tbl" type="submit" class="signup-image-link" value="Sign in"/>
+                                <!-- Need to make sign in -->
+                            </form>
                         </div>
                     </div>
                 </div>
             </section>
         </div>
-   
+
+
+        <%
+            if (i++ > 0 && request.getAttribute("message") != null) {
+                out.println(request.getAttribute("message"));
+                i--;
+            }
+        %>
     </body>
 </html>

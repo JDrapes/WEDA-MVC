@@ -15,6 +15,15 @@
         <link rel="stylesheet" href="css/style.css">
         <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="css/customChanges.css">    
+        
+                <!-- Custom styles -->
+        <link href="css/freelancer.min.css" rel="stylesheet">
+        <link href="css/freelancer.css" rel="stylesheet">
+        <!-- Custom fonts  -->
+        <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
+
     </head>
     <body>
         <main class="pageContainer">
@@ -47,13 +56,13 @@
                     <form method="POST" action="">
                         <input name="button" type="submit" class="btn btn-secondary" value="Annual turnover inc total income and total pay-outs"/>
                     </form>
-                    <form method="POST" action="UserService.do">
+                    <form method="POST" action="AdminService.do">
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Create a new user"/>
                     </form>
-                    <form method="POST" action="UserService.do">
+                    <form method="POST" action="AdminService.do">
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Delete a User"/>
                     </form>
-                    <form method="POST" action="UserService.do">
+                    <form method="POST" action="AdminService.do">
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Change my password"/>
                     </form>
 

@@ -8,6 +8,10 @@
         <servlet-name>AdminServLet</servlet-name>
         <servlet-class>com.AdminServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Signin</servlet-name>
+        <servlet-class>pages.Signin</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminServLet</servlet-name>
         <url-pattern>/AdminService.do</url-pattern>
@@ -28,7 +32,6 @@
         <servlet-name>Update</servlet-name>
         <servlet-class>pages.Update</servlet-class>
     </servlet>
-    
     <servlet-mapping>
         <servlet-name>NewUser</servlet-name>
         <url-pattern>/NewUser.do</url-pattern>
@@ -36,6 +39,10 @@
     <servlet-mapping>
         <servlet-name>Update</servlet-name>
         <url-pattern>/Update.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Signin</servlet-name>
+        <url-pattern>/Signin.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
