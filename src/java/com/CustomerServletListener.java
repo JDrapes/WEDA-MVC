@@ -20,7 +20,7 @@ import javax.servlet.ServletContext;
  * @author me-aydin
  */
 @WebListener()
-public class customerServletListener implements ServletContextListener {
+public class CustomerServletListener implements ServletContextListener {
 
     private Connection conn = null;
     

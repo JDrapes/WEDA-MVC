@@ -1,10 +1,10 @@
-package org.apache.jsp;
+package org.apache.jsp.WEB_002dINF;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.jsp.*;
 
-public final class customerPanel_jsp extends org.apache.jasper.runtime.HttpJspBase
+public final class passwdChange_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
@@ -47,27 +47,42 @@ public final class customerPanel_jsp extends org.apache.jasper.runtime.HttpJspBa
       out.write("<!DOCTYPE html>\n");
       out.write("<html>\n");
       out.write("    <head>\n");
-      out.write("        <title>West England Drivers Association</title>\n");
-      out.write("        <meta charset=\"UTF-8\">\n");
-      out.write("        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n");
-      out.write("\n");
-      out.write("        <!-- Main css -->\n");
-      out.write("        <link rel=\"stylesheet\" href=\"css/style.css\">\n");
-      out.write("        <link href=\"vendor/bootstrap/css/bootstrap.min.css\" rel=\"stylesheet\">\n");
-      out.write("        <link rel=\"stylesheet\" href=\"css/customChanges.css\">\n");
+      out.write("        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n");
+      out.write("        <title>Change Password</title>\n");
       out.write("    </head>\n");
       out.write("    <body>\n");
-      out.write("\n");
+      out.write("        <h2>Password change</h2>\n");
+      out.write("           <form method=\"POST\" action=\"Update.do\">     \n");
+      out.write("            <table>\n");
+      out.write("                <tr>\n");
+      out.write("                    <th></th>\n");
+      out.write("                    <th>Please provide your following details</th>\n");
+      out.write("                </tr>\n");
+      out.write("                <tr>\n");
+      out.write("                    <td>Username:</td>\n");
+      out.write("                    <td><input type=\"text\" name=\"username\"/></td>\n");
+      out.write("                </tr>\n");
+      out.write("                <tr>\n");
+      out.write("                    <td>New Password:</td>\n");
+      out.write("                    <td><input type=\"password\" name=\"password\"/></td>\n");
+      out.write("                </tr>\n");
+      out.write("                <tr>\n");
+      out.write("                    <td>Confirm Password:</td>\n");
+      out.write("                    <td><input type=\"password\" name=\"newpasswd\"/></td>\n");
+      out.write("                </tr>\n");
+      out.write("                <tr> \n");
+      out.write("                    <td> <input type=\"submit\" value=\"Change\"/></td>\n");
+      out.write("                </tr>\n");
+      out.write("            </table>\n");
+      out.write("        </form>\n");
       out.write("        ");
-      org.apache.jasper.runtime.JspRuntimeLibrary.include(request, response, "/WEB-INF/navigationBar.jsp", out, false);
+      out.print(((String)(request.getAttribute("msg"))!=null)?(String)(request.getAttribute("msg")):"");
       out.write("\n");
-      out.write("        ");
-      org.apache.jasper.runtime.JspRuntimeLibrary.include(request, response, "/WEB-INF/customerSidePanel.jsp", out, false);
-      out.write("\n");
+      out.write("         ");
+      org.apache.jasper.runtime.JspRuntimeLibrary.include(request, response, "foot.jsp", out, false);
       out.write("\n");
       out.write("    </body>\n");
       out.write("</html>\n");
-      out.write("\n");
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){
         out = _jspx_out;

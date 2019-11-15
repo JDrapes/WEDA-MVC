@@ -6,4 +6,6 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
- <a href="adminPanel.jsp"> Back to Admin Panel </a>
+
+
+<a href="adminPanel.jsp"> Back to Admin Panel </a>

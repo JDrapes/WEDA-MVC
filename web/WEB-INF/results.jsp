@@ -8,12 +8,21 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>DB Results</title>
+
     </head>
     <body>
-        <h1>The retrieved Data :</h1>
+        <jsp:include page="/WEB-INF/navigationBar.jsp"/> 
+        <jsp:include page="/WEB-INF/adminSidePanel.jsp"/> 
 
-        <%=(String)(request.getAttribute("query"))%>
-        <jsp:include page="foot.jsp"/>
+        <div class="content">
+            <h1>Title</h1>
+            
+            <%=(String) (request.getAttribute("query"))%>
+            
+            <jsp:include page="foot.jsp"/>
+
+        </div>
+
+
     </body>
 </html>

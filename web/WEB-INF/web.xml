@@ -8,6 +8,18 @@
         <servlet-name>AdminServLet</servlet-name>
         <servlet-class>com.AdminServlet</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminServLet</servlet-name>
+        <url-pattern>/AdminService.do</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>CustomerServLet</servlet-name>
+        <servlet-class>com.CustomerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CustomerServLet</servlet-name>
+        <url-pattern>/CustomerService.do</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>NewUser</servlet-name>
         <servlet-class>pages.NewUser</servlet-class>
@@ -16,10 +28,7 @@
         <servlet-name>Update</servlet-name>
         <servlet-class>pages.Update</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>AdminServLet</servlet-name>
-        <url-pattern>/AdminService.do</url-pattern>
-    </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>NewUser</servlet-name>
         <url-pattern>/NewUser.do</url-pattern>
