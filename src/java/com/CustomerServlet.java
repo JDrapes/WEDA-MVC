@@ -48,20 +48,7 @@ public class CustomerServlet extends HttpServlet {
         if((Connection)request.getServletContext().getAttribute("connection")==null)
             request.getRequestDispatcher("/WEB-INF/conErr.jsp").forward(request, response);
         
-        if (request.getParameter("tbl").equals("List Users")){
-            String msg="No users";
-            try {
-                msg = dbBean.retrieve(qry);
-            } catch (SQLException ex) {
-                Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            request.setAttribute("query", msg);
-            request.getRequestDispatcher("/WEB-INF/results.jsp").forward(request, response);
-        }
-        else if(request.getParameter("tbl").equals("Create a new user")){
-            request.getRequestDispatcher("/WEB-INF/user.jsp").forward(request, response);
-        } 
-        else if(request.getParameter("tbl").equals("Change my password")){
+        if(request.getParameter("tbl").equals("Change my password")){
             request.getRequestDispatcher("/WEB-INF/passwdChange.jsp").forward(request, response);    
         }
         else {

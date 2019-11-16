@@ -29,7 +29,7 @@
         <main class="pageContainer">
             <div class="row">
                 <div class="sidebar text-center">
-                    <img src="https://s3.amazonaws.com/uifaces/faces/twitter/mantia/128.jpg" class="img-circle">
+                    <img src="https://images.discordapp.net/attachments/186582898613288960/327207210277011457/rick_by_ghuzz_buzz-d9qs3nr.png" class="img-circle">
                     <h3>Admin Name</h3>
                     <!-- buttons below -->
                     <form method="POST" action="AdminService.do">
