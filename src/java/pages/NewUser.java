@@ -6,6 +6,7 @@
 package pages;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,35 +32,34 @@ public class NewUser extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         HttpSession session = request.getSession(false);
-        
-        Jdbc jdbc = (Jdbc)session.getAttribute("dbbean");
-        
-        String [] query = new String[2];
-        query[0] = (String)request.getParameter("username");
+
+        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
+
+        String[] query = new String[2];
+        query[0] = (String) request.getParameter("username");
         query[1] = jdbc.generateRandomPassword();
         //String insert = "INSERT INTO `Users` (`username`, `password`) VALUES ('";
-      
-         
+
         
-        if (jdbc == null)
+
+        if (jdbc == null) {
             request.getRequestDispatcher("/WEB-INF/conErr.jsp").forward(request, response);
-        
-        if(query[0].equals("") ) {
-            request.setAttribute("message", "Username cannot be NULL");
-        } 
-        else if(jdbc.exists(query[0])){
-            request.setAttribute("message", query[0]+" is already taken as username");
         }
-        else {
+
+        if (query[0].equals("")) {
+            request.setAttribute("message", "Username cannot be NULL");
+        } else if (jdbc.exists(query[0])) {
+            request.setAttribute("message", query[0] + " is already taken as username");
+        } else {
             jdbc.insert(query);
-            
+  
             request.getRequestDispatcher("login.jsp").forward(request, response);
-            request.setAttribute("message", query[0]+" is added - please now sign in");
+            //request.setAttribute("message", query[0] + " is added - please now sign in");
             //Need to tell the user their password. 
         }
-         
+
         request.getRequestDispatcher("register.jsp").forward(request, response);
     }
 

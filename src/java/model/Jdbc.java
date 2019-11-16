@@ -105,19 +105,27 @@ public class Jdbc {
     }
     
     //Created boolean that takes username+pasword entry and validates against database
-    public boolean loginSuccess(String user, String password){
+    public int loginSuccess(String user, String password){
         boolean bool = false;
         try  {
             select("select * from users");
             while(rs.next()) {
                 if(rs.getString("username").equals(user) && rs.getString("password").equals(password)){
-                    return true;
+                    if(rs.getString("profiletype").equals("admin")){ //return int 1 for admin
+                        return 1;
+                    } else if(rs.getString("profiletype").equals("customer")){ //return int 2 for reg customer
+                        return 2;
+                    }
+                    else{
+                        //If they don't have a profile in database or another issue occurred
+                        return 0;
+                    }
                 }            
             }
         } catch (SQLException ex) {
             Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return bool;
+        return 0;
     }
     
     public boolean exists(String user) {

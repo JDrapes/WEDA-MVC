@@ -47,13 +47,19 @@ public class Signin extends HttpServlet {
             query[0] = (String)request.getParameter("txtemail");
             query[1] = (String)request.getParameter("txtpassword");
             
-            if(jdbc.loginSuccess(query[0],query[1])){
-                request.getRequestDispatcher("adminPanel.jsp").forward(request, response);
-                request.setAttribute("msg", "Succesful login");
-            }
-            else{
-                request.getRequestDispatcher("login.jsp").forward(request, response);
-                request.setAttribute("msg", "Invalid login");
+            switch (jdbc.loginSuccess(query[0],query[1])) {
+                case 1: //Admin panel
+                    request.getRequestDispatcher("adminPanel.jsp").forward(request, response);
+                    request.setAttribute("msg", "Succesful login");
+                    break;
+                case 2: //Customer panel
+                    request.getRequestDispatcher("customerPanel.jsp").forward(request, response);
+                    request.setAttribute("msg", "Succesful login");
+                    break;
+                default: //Invalid - something is broken, check database for if user has an assigned profile
+                    request.getRequestDispatcher("login.jsp").forward(request, response);
+                    request.setAttribute("msg", "Invalid login");
+                    break;
             }
         }
     }

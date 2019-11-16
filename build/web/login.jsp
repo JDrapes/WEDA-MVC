@@ -26,7 +26,7 @@
             String str = "Sign in";
             String url = "Signin.do";
         %>
-       
+
         <jsp:include page="/WEB-INF/navigationBar.jsp"/>
 
         <div class="main">
@@ -68,15 +68,13 @@
                     </div>
                 </div>
             </section>
-
+                              <%
+                                    if (i++ > 0 && request.getAttribute("message") != null) {
+                                        out.println(request.getAttribute("message"));
+                                        i--;
+                                    }
+                                %>
         </div>
-
-        <%
-            if (i++ > 0 && request.getAttribute("message") != null) {
-                out.println(request.getAttribute("message"));
-                i--;
-            }
-        %>
     </body>
 
 </html>

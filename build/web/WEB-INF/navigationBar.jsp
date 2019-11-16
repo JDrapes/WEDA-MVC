@@ -14,7 +14,6 @@
 %>
 <!-- Will need to at a str and url for logging out if the user session is active... -->  
 
-
 <!-- NAVBAR -->
 <nav class="navbar navbar-dark bg-dark">
 
