@@ -144,9 +144,10 @@ public class Jdbc {
     public void insert(String[] str){
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("INSERT INTO Users VALUES (?,?)",PreparedStatement.RETURN_GENERATED_KEYS);
+            ps = connection.prepareStatement("INSERT INTO Users VALUES (?,?,?)",PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1, str[0].trim()); 
             ps.setString(2, str[1]);
+            ps.setString(3, str[2]);
             ps.executeUpdate();
         
             ps.close();

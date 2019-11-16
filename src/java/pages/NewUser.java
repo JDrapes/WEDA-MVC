@@ -37,9 +37,10 @@ public class NewUser extends HttpServlet {
 
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
 
-        String[] query = new String[2];
+        String[] query = new String[3];
         query[0] = (String) request.getParameter("username");
         query[1] = jdbc.generateRandomPassword();
+        query[2] = "customer";
         //String insert = "INSERT INTO `Users` (`username`, `password`) VALUES ('";
 
         
