@@ -8,6 +8,7 @@ package pages;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +19,7 @@ import model.Jdbc;
  *
  * @author jordandraper
  */
+@WebServlet(name = "Signin", urlPatterns = {"/Signin.do"})
 public class Signin extends HttpServlet {
 
     /**
@@ -48,7 +50,11 @@ public class Signin extends HttpServlet {
             if(jdbc.loginSuccess(query[0],query[1])){
                 request.getRequestDispatcher("adminPanel.jsp").forward(request, response);
                 request.setAttribute("msg", "Succesful login");
-            } 
+            }
+            else{
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+                request.setAttribute("msg", "Invalid login");
+            }
         }
     }
 

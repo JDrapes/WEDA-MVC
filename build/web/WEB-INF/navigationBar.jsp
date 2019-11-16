@@ -5,37 +5,27 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<link rel="stylesheet" href="css/customChanges.css">
 <!DOCTYPE html>
 
 <%! int i = 0;
     String str = "Sign in";
     String url = "Signin.do";
 %>
+<!-- Will need to at a str and url for logging out if the user session is active... -->  
+
 
 <!-- NAVBAR -->
 <nav class="navbar navbar-dark bg-dark">
+
     <a class="navbar-brand" href="index.jsp">West England Driver Association</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="index.jsp">Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Panel (admin panel/user panel <span class="sr-only">(current)</span></a>
-            </li>                
-            <li class="nav-item">
-                <form method="POST" action="AdminService.do">
-                    <input name="tbl" type="submit" class="signup-image-link" value="Sign in"/>
-                    <a name="tbl" class="nav-link" value="Sign in">Login / Register</a>
 
-                </form>
-
-            </li>
-        </ul>
+    <div class="navbar-nav">      
+        <form method="POST" action="<%=url%>">
+            <input name="tbl" type="submit" class="btn btn-outline-secondary" value="<%=str%>"/>
+        </form>
     </div>
+
 </nav>
 <!-- END OF NAVBAR -->
 

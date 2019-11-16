@@ -49,12 +49,12 @@
                             <h2 class="form-title">Register</h2>
                             <form action="<%=url%>" method="POST" class="register-form" id="register-form">
                                 <div class="form-group">
-                                    <label for="username"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                    <label for="username"><i class="zmdi zmdi-email"></i></label>
                                     <input type="text" name="username" id="name" placeholder="Your email"/>
-                                </div>
+                                </div>                    
                                 <div class="form-group">
-                                    <label for="password"><i class="zmdi zmdi-email"></i></label>
-                                    <input type="password" name="password" id="email" placeholder="enter a password"/>
+                                    <label for="dateOfBirth"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                    <input type="text" name="dateOfBirth" id="dateOfBirth" placeholder="Date of Birth"/>
                                 </div>
                                 <div class="form-group">
                                     <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />
@@ -76,7 +76,6 @@
                 </div>
             </section>
         </div>
-
 
         <%
             if (i++ > 0 && request.getAttribute("message") != null) {

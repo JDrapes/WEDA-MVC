@@ -12,6 +12,10 @@
         <servlet-name>Signin</servlet-name>
         <servlet-class>pages.Signin</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>pages.Logout</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AdminServLet</servlet-name>
         <url-pattern>/AdminService.do</url-pattern>
@@ -43,6 +47,10 @@
     <servlet-mapping>
         <servlet-name>Signin</servlet-name>
         <url-pattern>/Signin.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/Logout.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

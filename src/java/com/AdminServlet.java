@@ -66,7 +66,7 @@ public class AdminServlet extends HttpServlet {
         }
         else if(request.getParameter("tbl").equals("Sign in")){
             request.getRequestDispatcher("login.jsp").forward(request, response);    
-        }
+        }  
         else {
             request.setAttribute("msg", "del");
             request.getRequestDispatcher("/WEB-INF/user.jsp").forward(request, response); 

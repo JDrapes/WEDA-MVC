@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.sql.Time;
 import static java.sql.Types.NULL;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -175,6 +176,20 @@ public class Jdbc {
             //results = e.toString();
         }
     }
+    
+    public boolean logout(){
+        try {
+            rs.close();
+            statement.close(); 		
+            connection.close(); 
+            return true; //Successful logout
+        }
+        catch(SQLException e) {
+            System.out.println(e);
+        }
+        return false; //Failed to logout
+    }
+    
     public void closeAll(){
         try {
             rs.close();
@@ -185,6 +200,22 @@ public class Jdbc {
             System.out.println(e);
         }
     }
+    
+    public String generateRandomPassword() {
+        //Generates a random 6 string password for registering users
+        int PASS_LENGTH = 6;
+        String password = "";
+        int[] passwordArray = new int[6];
+        Random rand = new Random();
+        
+        for (int x = 0; x < PASS_LENGTH; x++){
+            passwordArray[x] = rand.nextInt(10);
+            password += (Integer.toString(passwordArray[x]));
+        }
+        return password;
+    }  
+   
+    
     public static void main(String[] args) throws SQLException {
  
         

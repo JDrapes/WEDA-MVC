@@ -6,7 +6,10 @@
 package pages;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,9 +18,10 @@ import model.Jdbc;
 
 /**
  *
- * @author me-aydin
+ * @author jordandraper
  */
-public class NewUser extends HttpServlet {
+@WebServlet(name = "Logout", urlPatterns = {"/Logout.do"})
+public class Logout extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -28,39 +32,25 @@ public class NewUser extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
         response.setContentType("text/html;charset=UTF-8");
-        
         HttpSession session = request.getSession(false);
-        
-        Jdbc jdbc = (Jdbc)session.getAttribute("dbbean");
-        
-        String [] query = new String[2];
-        query[0] = (String)request.getParameter("username");
-        query[1] = jdbc.generateRandomPassword();
-        //String insert = "INSERT INTO `Users` (`username`, `password`) VALUES ('";
-      
-         
+       
+        Jdbc jdbc = (Jdbc)session.getAttribute("dbbean"); 
         
         if (jdbc == null)
             request.getRequestDispatcher("/WEB-INF/conErr.jsp").forward(request, response);
         
-        if(query[0].equals("") ) {
-            request.setAttribute("message", "Username cannot be NULL");
-        } 
-        else if(jdbc.exists(query[0])){
-            request.setAttribute("message", query[0]+" is already taken as username");
+        if (jdbc.logout()) {
+            //Succesful connection termination
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+        } else {
+            //Need to terminate connection but failed
+            request.getRequestDispatcher("/WEB-INF/conErr.jsp").forward(request, response);
+
         }
-        else {
-            jdbc.insert(query);
-            
-            request.getRequestDispatcher("login.jsp").forward(request, response);
-            request.setAttribute("message", query[0]+" is added - please now sign in");
-            //Need to tell the user their password. 
-        }
-         
-        request.getRequestDispatcher("register.jsp").forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
