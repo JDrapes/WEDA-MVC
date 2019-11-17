@@ -11,13 +11,14 @@
 
     </head>
     <body>
-        <table>
-            <jsp:include page="/WEB-INF/navigationBar.jsp"/> 
+        <jsp:include page="/WEB-INF/navigationBar.jsp"/> 
+
+        <table float="left" height="100%" cellpadding="0">
             <tr>
                 <td>
                     <jsp:include page="/WEB-INF/adminSidePanel.jsp"/> 
                 </td>
-                <td>
+                <td float="top">
                     <div class="content">
                         <h1>Listing all members</h1>
 
