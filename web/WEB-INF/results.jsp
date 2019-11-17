@@ -19,7 +19,7 @@
             
             <%=(String) (request.getAttribute("query"))%>
             
-            <jsp:include page="foot.jsp"/>
+            <jsp:include page="/WEB-INF/foot.jsp"/>
 
         </div>
 

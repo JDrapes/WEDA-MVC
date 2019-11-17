@@ -13,9 +13,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <!-- Main css -->
-        <link rel="stylesheet" href="css/style.css">
-        <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="css/customChanges.css">
+        <link rel="stylesheet" href="/css/style.css">
+        <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="/css/customChanges.css">
     </head>
     <body>
 

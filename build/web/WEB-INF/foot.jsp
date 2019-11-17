@@ -8,4 +8,4 @@
 <!DOCTYPE html>
 
 
-<a href="adminPanel.jsp"> Back to Admin Panel </a>
+<a href="index.jsp"> Logout - back to index page </a>

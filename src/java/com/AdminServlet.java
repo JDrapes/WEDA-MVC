@@ -59,13 +59,13 @@ public class AdminServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/results.jsp").forward(request, response);
         }
         else if(request.getParameter("tbl").equals("Create a new user")){
-            request.getRequestDispatcher("register.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
         } 
         else if(request.getParameter("tbl").equals("Change my password")){
             request.getRequestDispatcher("/WEB-INF/passwdChange.jsp").forward(request, response);    
         }
         else if(request.getParameter("tbl").equals("Sign in")){
-            request.getRequestDispatcher("login.jsp").forward(request, response);    
+            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);    
         }  
         else {
             request.setAttribute("msg", "del");

@@ -37,6 +37,6 @@
             </table>
         </form>
         <%=((String)(request.getAttribute("msg"))!=null)?(String)(request.getAttribute("msg")):""%>
-         <jsp:include page="foot.jsp"/>
+         <jsp:include page="/WEB-INF/foot.jsp"/>
     </body>
 </html>

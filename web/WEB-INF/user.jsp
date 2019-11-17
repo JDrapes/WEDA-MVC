@@ -54,6 +54,6 @@
             }
         %>
         </br>
-        <jsp:include page="foot.jsp"/>
+        <jsp:include page="/WEB-INF/foot.jsp"/>
     </body>
 </html>

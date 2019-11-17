@@ -58,12 +58,12 @@ public class NewUser extends HttpServlet {
         } else {
             jdbc.insert(query);
   
-            request.getRequestDispatcher("login.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
             //request.setAttribute("message", query[0] + " is added - please now sign in");
             //Need to tell the user their password. 
         }
 
-        request.getRequestDispatcher("register.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/register.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
