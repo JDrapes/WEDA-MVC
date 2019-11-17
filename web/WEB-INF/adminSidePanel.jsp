@@ -69,7 +69,6 @@
                     <!-- end of buttons -->
                 </div>
                 <div class="content">
-                    <h1>Title</h1>
 
                 </div>
             </div>

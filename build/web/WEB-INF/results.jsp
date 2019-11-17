@@ -11,18 +11,25 @@
 
     </head>
     <body>
-        <jsp:include page="/WEB-INF/navigationBar.jsp"/> 
-        <jsp:include page="/WEB-INF/adminSidePanel.jsp"/> 
+        <table>
+            <jsp:include page="/WEB-INF/navigationBar.jsp"/> 
+            <tr>
+                <td>
+                    <jsp:include page="/WEB-INF/adminSidePanel.jsp"/> 
+                </td>
+                <td>
+                    <div class="content">
+                        <h1>Listing all members</h1>
 
-        <div class="content">
-            <h1>Title</h1>
-            
-            <%=(String) (request.getAttribute("query"))%>
-            
-            <jsp:include page="/WEB-INF/foot.jsp"/>
+                        <%=(String) (request.getAttribute("query"))%>
 
+
+                        <jsp:include page="/WEB-INF/foot.jsp"/>
+                </td>
+
+            </tr>
         </div>
+    </table>
 
-
-    </body>
+</body>
 </html>
