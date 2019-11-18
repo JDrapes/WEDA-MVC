@@ -46,15 +46,27 @@ public class Signin extends HttpServlet {
             String [] query = new String[2];
             query[0] = (String)request.getParameter("txtemail");
             query[1] = (String)request.getParameter("txtpassword");
+            String username;
             
             switch (jdbc.loginSuccess(query[0],query[1])) {
                 case 1: //Admin panel
+                    request.getSession(); //GET THE SESSION IF ONE EXISTS, OTHERWISE CREATE ONE
+                    session.setAttribute("username",query[0]);
+                    username=(String)session.getAttribute("username"); //getting username from session from login
+                    request.setAttribute("username",username);
                     request.getRequestDispatcher("/WEB-INF/adminPanel.jsp").forward(request, response);
                     request.setAttribute("msg", "Succesful login");
+                      
                     break;
                 case 2: //Customer panel
+                    request.getSession(); //GET THE SESSION IF ONE EXISTS, OTHERWISE CREATE ONE 
+                    session.setAttribute("username",query[0]);
+                    username=(String)session.getAttribute("username"); //getting username from session from login
+                    request.setAttribute("username",username);
                     request.getRequestDispatcher("/WEB-INF/customerPanel.jsp").forward(request, response);
                     request.setAttribute("msg", "Succesful login");
+                     
+
                     break;
                 default: //Invalid - something is broken, check database for if user has an assigned profile
                     request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);

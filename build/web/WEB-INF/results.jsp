@@ -23,6 +23,8 @@
                         <h1>Listing all members</h1>
 
                         <%=(String) (request.getAttribute("query"))%>
+                        <%=(String) (request.getAttribute("username"))%>
+
 
 
                         <jsp:include page="/WEB-INF/foot.jsp"/>

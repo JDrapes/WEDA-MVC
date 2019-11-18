@@ -38,6 +38,8 @@ public class AdminServlet extends HttpServlet {
         String qry = "select * from users";
        
         HttpSession session = request.getSession();
+        String username=(String)session.getAttribute("username"); //getting username from session from login
+
         
         response.setContentType("text/html;charset=UTF-8");
         
@@ -56,6 +58,7 @@ public class AdminServlet extends HttpServlet {
                 Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             request.setAttribute("query", msg);
+            request.setAttribute("username",username);
             request.getRequestDispatcher("/WEB-INF/results.jsp").forward(request, response);
         }
         else if(request.getParameter("tbl").equals("Create a new user")){

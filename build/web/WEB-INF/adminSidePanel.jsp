@@ -30,7 +30,7 @@
             <div class="row">
                 <div class="sidebar text-center">
                     <img src="https://images.discordapp.net/attachments/186582898613288960/327207210277011457/rick_by_ghuzz_buzz-d9qs3nr.png" class="img-circle">
-                    <h3>Admin Name</h3>
+                    <h3><%=(String) (request.getAttribute("username"))%></h3>
                     <!-- buttons below -->
                     <form method="POST" action="AdminService.do">
                         <input name="tbl" type="submit" class="btn btn-secondary" value="List Users"/>
