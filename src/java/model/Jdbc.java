@@ -171,16 +171,17 @@ public class Jdbc {
         }
     }
 
-    public void upgradeProvisionalToMember(String[] str) {
+    public void upgradeProvisionalToMember(String upgradeUser) {
         PreparedStatement ps = null;
         try {
             ps = connection.prepareStatement("Update Users Set profiletype=? where username=?", PreparedStatement.RETURN_GENERATED_KEYS);
 
-            ps.setString(1, str[0].trim());
-            ps.setString(2, "members");
+            ps.setString(1, "customer");
+            ps.setString(2, upgradeUser);
+            
             select("select * from users"); //Before changing to "customer" check that they are actually provisional
             while (rs.next()) {
-                if (rs.getString("username").equals(str[0])) {
+                if (rs.getString("username").equals(upgradeUser)) {
                     if (rs.getString("profiletype").equals("provisional")) {
                         //If user exists in database & is provisional then we can execute the statement.
                         ps.executeUpdate();

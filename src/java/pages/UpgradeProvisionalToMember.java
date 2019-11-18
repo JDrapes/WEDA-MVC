@@ -8,6 +8,7 @@ package pages;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +19,7 @@ import model.Jdbc;
  *
  * @author jordandraper
  */
-public class upgradeProvisionalToMember extends HttpServlet {
+public class UpgradeProvisionalToMember extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,14 +37,14 @@ public class upgradeProvisionalToMember extends HttpServlet {
         HttpSession session = request.getSession();
 
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
-        if (jdbc == null) {
+        if (jdbc == null) 
             request.getRequestDispatcher("/WEB-INF/conErr.jsp").forward(request, response);
-        } else {
-            String[] query = new String[1];
+        
+        else {
 
-            query[0] = (String) request.getParameter("userToUpgrade");
-
-            jdbc.upgradeProvisionalToMember(query);
+            String upgradeUser = (String) request.getParameter("userToUpgrade");
+            jdbc.upgradeProvisionalToMember(upgradeUser);
+            request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response); 
 
         }
     }

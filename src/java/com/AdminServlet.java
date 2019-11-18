@@ -103,7 +103,7 @@ public class AdminServlet extends HttpServlet {
             }
             request.setAttribute("query", msg);
             request.setAttribute("username",username);
-            request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response); 
         }
         
         
