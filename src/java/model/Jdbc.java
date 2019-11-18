@@ -20,77 +20,72 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author me-aydin
- */
 public class Jdbc {
-    
+
     Connection connection = null;
     Statement statement = null;
     ResultSet rs = null;
     //String query = null;
-    
-    
-    public Jdbc(String query){
+
+    public Jdbc(String query) {
         //this.query = query;
     }
 
     public Jdbc() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    public void connect(Connection con){
-       connection = con;
+
+    public void connect(Connection con) {
+        connection = con;
     }
-    
+
     private ArrayList rsToList() throws SQLException {
         ArrayList aList = new ArrayList();
 
         int cols = rs.getMetaData().getColumnCount();
-        while (rs.next()) { 
-          String[] s = new String[cols];
-          for (int i = 1; i <= cols; i++) {
-            s[i-1] = rs.getString(i);
-          } 
-          aList.add(s);
+        while (rs.next()) {
+            String[] s = new String[cols];
+            for (int i = 1; i <= cols; i++) {
+                s[i - 1] = rs.getString(i);
+            }
+            aList.add(s);
         } // while    
         return aList;
     } //rsToList
- 
+
     private String makeTable(ArrayList list) {
         StringBuilder b = new StringBuilder();
         String[] row;
         b.append("<table border=\"3\">");
         for (Object s : list) {
-          b.append("<tr>");
-          row = (String[]) s;
+            b.append("<tr>");
+            row = (String[]) s;
             for (String row1 : row) {
                 b.append("<td>");
                 b.append(row1);
                 b.append("</td>");
             }
-          b.append("</tr>\n");
+            b.append("</tr>\n");
         } // for
         b.append("</table>");
         return b.toString();
     }//makeHtmlTable
-    
-    private void select(String query){
+
+    private void select(String query) {
         //Statement statement = null;
-        
+
         try {
             statement = connection.createStatement();
             rs = statement.executeQuery(query);
             //statement.close();
-        }
-        catch(SQLException e) {
-            System.out.println("way way"+e);
+        } catch (SQLException e) {
+            System.out.println("way way" + e);
             //results = e.toString();
         }
     }
+
     public String retrieve(String query) throws SQLException {
-        String results="";
+        String results = "";
         select(query);
 //        try {
 //            
@@ -103,37 +98,37 @@ public class Jdbc {
 //        }
         return makeTable(rsToList());//results;
     }
-    
+
     //Created boolean that takes username+pasword entry and validates against database
-    public int loginSuccess(String user, String password){
+    public int loginSuccess(String user, String password) {
         boolean bool = false;
-        try  {
+        try {
             select("select * from users");
-            while(rs.next()) {
-                if(rs.getString("username").equals(user) && rs.getString("password").equals(password)){
-                    if(rs.getString("profiletype").equals("admin")){ //return int 1 for admin
+            while (rs.next()) {
+                if (rs.getString("username").equals(user) && rs.getString("password").equals(password)) {
+                    if (rs.getString("profiletype").equals("admin")) { //return int 1 for admin
                         return 1;
-                    } else if(rs.getString("profiletype").equals("customer")){ //return int 2 for reg customer
+                    } else if (rs.getString("profiletype").equals("customer") || rs.getString("profiletype").equals("provisional")) { //return int 2 for reg customer
                         return 2;
-                    }
-                    else{
+                    } else {
                         //If they don't have a profile in database or another issue occurred
                         return 0;
                     }
-                }            
+                }
             }
         } catch (SQLException ex) {
             Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
         }
         return 0;
     }
-    
+    //This function checks if the user exists in the database - part of registration 
+
     public boolean exists(String user) {
         boolean bool = false;
-        try  {
-            select("select username from users where username='"+user+"'");
-            if(rs.next()) {
-                System.out.println("TRUE");         
+        try {
+            select("select username from users where username='" + user + "'");
+            if (rs.next()) {
+                System.out.println("TRUE");
                 bool = true;
             }
         } catch (SQLException ex) {
@@ -141,93 +136,119 @@ public class Jdbc {
         }
         return bool;
     }
-    public void insert(String[] str){
+
+    //This inserts the record to the database when registering on the register page
+    public void insert(String[] str) {
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("INSERT INTO Users VALUES (?,?,?)",PreparedStatement.RETURN_GENERATED_KEYS);
-            ps.setString(1, str[0].trim()); 
+            ps = connection.prepareStatement("INSERT INTO Users VALUES (?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setString(1, str[0].trim());
             ps.setString(2, str[1]);
             ps.setString(3, str[2]);
             ps.executeUpdate();
-        
+
             ps.close();
             System.out.println("1 row added.");
         } catch (SQLException ex) {
             Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
         }
-         
+
     }
+
+    //This updates the password in the database based on the username
     public void update(String[] str) {
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("Update Users Set password=? where username=?",PreparedStatement.RETURN_GENERATED_KEYS);
-            ps.setString(1, str[1].trim()); 
+            ps = connection.prepareStatement("Update Users Set password=? where username=?", PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setString(1, str[1].trim());
             ps.setString(2, str[0].trim());
             ps.executeUpdate();
-        
+
             ps.close();
             System.out.println("1 rows updated.");
         } catch (SQLException ex) {
             Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public void delete(String user){
-       
-      String query = "DELETE FROM Users " +
-                   "WHERE username = '"+user.trim()+"'";
-      
+
+    public void upgradeProvisionalToMember(String[] str) {
+        PreparedStatement ps = null;
+        try {
+            ps = connection.prepareStatement("Update Users Set profiletype=? where username=?", PreparedStatement.RETURN_GENERATED_KEYS);
+
+            ps.setString(1, str[0].trim());
+            ps.setString(2, "members");
+            select("select * from users"); //Before changing to "customer" check that they are actually provisional
+            while (rs.next()) {
+                if (rs.getString("username").equals(str[0])) {
+                    if (rs.getString("profiletype").equals("provisional")) {
+                        //If user exists in database & is provisional then we can execute the statement.
+                        ps.executeUpdate();
+                        ps.close();
+                        System.out.println("Member upgraded.");
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    //this function deletes a record frm database, parameter is the username
+    public void delete(String user) {
+
+        String query = "DELETE FROM Users "
+                + "WHERE username = '" + user.trim() + "'";
+
         try {
             statement = connection.createStatement();
             statement.executeUpdate(query);
-        }
-        catch(SQLException e) {
-            System.out.println("way way"+e);
+        } catch (SQLException e) {
+            System.out.println("way way" + e);
             //results = e.toString();
         }
     }
-    
-    public boolean logout(){
+
+    //Logout function
+    public boolean logout() {
         try {
             rs.close();
-            statement.close(); 		
-            connection.close(); 
+            statement.close();
+            connection.close();
             return true; //Successful logout
-        }
-        catch(SQLException e) {
+        } catch (SQLException e) {
             System.out.println(e);
         }
         return false; //Failed to logout
     }
-    
-    public void closeAll(){
+
+    //Closes all conections
+    public void closeAll() {
         try {
             rs.close();
-            statement.close(); 		
+            statement.close();
             //connection.close();                                         
-        }
-        catch(SQLException e) {
+        } catch (SQLException e) {
             System.out.println(e);
         }
     }
-    
+
+    //Function to generate random password on registration
     public String generateRandomPassword() {
         //Generates a random 6 string password for registering users
         int PASS_LENGTH = 6;
         String password = "";
         int[] passwordArray = new int[6];
         Random rand = new Random();
-        
-        for (int x = 0; x < PASS_LENGTH; x++){
+
+        for (int x = 0; x < PASS_LENGTH; x++) {
             passwordArray[x] = rand.nextInt(10);
             password += (Integer.toString(passwordArray[x]));
         }
         return password;
-    }  
-   
-    
+    }
+
     public static void main(String[] args) throws SQLException {
- 
-        
-        
-    }            
+
+    }
 }

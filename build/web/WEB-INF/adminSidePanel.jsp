@@ -33,16 +33,27 @@
                     <h3><%=(String) (request.getAttribute("username"))%></h3>
                     <!-- buttons below -->
                     <form method="POST" action="AdminService.do">
+                        <!-- List all users --> 
                         <input name="tbl" type="submit" class="btn btn-secondary" value="List Users"/>
-                        <input name="button" type="submit" class="btn btn-secondary" value="List all oustanding balances"/>
-                        <input name="button" type="submit" class="btn btn-secondary" value="List all claims"/>
-                        <input name="button" type="submit" class="btn btn-secondary" value="List all professional member applications"/>
-                        <input name="button" type="submit" class="btn btn-secondary" value="Process individual claims"/>
-                        <input name="button" type="submit" class="btn btn-secondary" value="Process membership applications & upgrade if payment was made"/>
-                        <input name="button" type="submit" class="btn btn-secondary" value="Suspend/Resume memberships"/>
-                        <input name="button" type="submit" class="btn btn-secondary" value="Annual turnover inc total income and total pay-outs"/>
-                        <input name="tbl" type="submit" class="btn btn-secondary" value="Create a new user"/>
+                        <!-- List all outstanding balances --> 
+                        <input name="tbl" type="submit" class="btn btn-secondary" value="List all oustanding balances"/>
+                        <!-- List all claims --> 
+                        <input name="tbl" type="submit" class="btn btn-secondary" value="List all claims"/>
+                        <!-- List all professional membership applications with option to upgrade them -->
+                        <input name="tbl" type="submit" class="btn btn-secondary" value="Manage Memberships"/>
+                        <!-- List all professional membership applications --> 
+                        <input name="tbl" type="submit" class="btn btn-secondary" value="List all professional member applications"/>
+                        <!-- Process membership applications & upgrade if payment was made --> 
+                        <input name="tbl" type="submit" class="btn btn-secondary" value="Process membership applications & upgrade if payment was made"/>
+                        <!-- Process individual claims --> 
+                        <input name="tbl" type="submit" class="btn btn-secondary" value="Process individual claims"/>
+                        <!-- Suspend or resume memberships --> 
+                        <input name="tbl" type="submit" class="btn btn-secondary" value="Suspend/Resume memberships"/>
+                        <!-- Annual turnover including total income and total pay-outs --> 
+                        <input name="tbl" type="submit" class="btn btn-secondary" value="Annual turnover inc total income and total pay-outs"/>
+                        <!-- Delete a users account  --> 
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Delete a User"/>
+                        <!-- Change your password  --> 
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Change my password"/>
                     </form>
 
