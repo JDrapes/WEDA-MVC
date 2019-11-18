@@ -44,6 +44,7 @@ public class Logout extends HttpServlet {
         
         if (jdbc.logout()) {
             //Succesful connection termination
+            session.invalidate(); //Ends the session after terminating database connection
             request.getRequestDispatcher("index.jsp").forward(request, response);
         } else {
             //Need to terminate connection but failed

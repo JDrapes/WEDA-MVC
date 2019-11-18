@@ -9,6 +9,19 @@
 <!DOCTYPE html>
 
 <!-- Will need to at a str and url for logging out if the user session is active... -->  
+<%! int i = 0;
+            String str = "Sign in";
+            String url = "Signin.do";
+        %>
+        <%
+            if ((String) request.getAttribute("username") == null) {
+                str = "Sign in";
+                url = "Signin.do";
+            } else {
+                str = "Logout";
+                url = "Logout.do";
+            }
+        %>
 
 <!-- NAVBAR -->
 <nav class="navbar navbar-dark bg-dark">
@@ -17,7 +30,7 @@
 
     <div class="navbar-nav">      
         <form method="POST" action="AdminService.do">
-            <input name="tbl" type="submit" class="btn btn-outline-secondary" value="Sign in"/>
+            <input name="tbl" type="submit" class="btn btn-outline-secondary" value="<%=str%>"/>
         </form>
     </div>
 

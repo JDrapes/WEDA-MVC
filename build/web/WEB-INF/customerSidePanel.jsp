@@ -27,19 +27,11 @@
                     <!-- buttons below -->
                     <form method="get" action="">
                         <input name="button" type="submit" class="btn btn-secondary" value="Check outstanding balance"/>
-                    </form>
-                    <form method="get" action="">
                         <input name="button" type="submit" class="btn btn-secondary" value="List all payments and claims to date"/>
-                    </form>
-                    <form method="get" action="">
                         <input name="button" type="submit" class="btn btn-secondary" value="Make a payment"/>
-                    </form>
-                    <form method="get" action="">
                         <input name="button" type="submit" class="btn btn-secondary" value="Submit a claim"/>
                     </form>
-                  <form method="POST" action="CustomerService.do">
-                        <input name="tbl" type="submit" class="btn btn-secondary" value="List Users"/>
-                    </form>
+                
                     <!-- end of buttons -->
                 </div>
                 <div class="content">

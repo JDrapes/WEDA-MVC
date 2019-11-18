@@ -21,14 +21,6 @@
         <url-pattern>/AdminService.do</url-pattern>
     </servlet-mapping>
     <servlet>
-        <servlet-name>CustomerServLet</servlet-name>
-        <servlet-class>com.CustomerServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>CustomerServLet</servlet-name>
-        <url-pattern>/CustomerService.do</url-pattern>
-    </servlet-mapping>
-    <servlet>
         <servlet-name>NewUser</servlet-name>
         <servlet-class>pages.NewUser</servlet-class>
     </servlet>

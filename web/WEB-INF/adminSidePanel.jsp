@@ -34,35 +34,15 @@
                     <!-- buttons below -->
                     <form method="POST" action="AdminService.do">
                         <input name="tbl" type="submit" class="btn btn-secondary" value="List Users"/>
-                    </form>
-                    <form method="POST" action="">
                         <input name="button" type="submit" class="btn btn-secondary" value="List all oustanding balances"/>
-                    </form>
-                    <form method="POST" action="">
                         <input name="button" type="submit" class="btn btn-secondary" value="List all claims"/>
-                    </form>
-                    <form method="POST" action="">
                         <input name="button" type="submit" class="btn btn-secondary" value="List all professional member applications"/>
-                    </form>
-                    <form method="POST" action="">
                         <input name="button" type="submit" class="btn btn-secondary" value="Process individual claims"/>
-                    </form>
-                    <form method="POST" action="">
                         <input name="button" type="submit" class="btn btn-secondary" value="Process membership applications & upgrade if payment was made"/>
-                    </form>
-                    <form method="POST" action="">
                         <input name="button" type="submit" class="btn btn-secondary" value="Suspend/Resume memberships"/>
-                    </form>
-                    <form method="POST" action="">
                         <input name="button" type="submit" class="btn btn-secondary" value="Annual turnover inc total income and total pay-outs"/>
-                    </form>
-                    <form method="POST" action="AdminService.do">
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Create a new user"/>
-                    </form>
-                    <form method="POST" action="AdminService.do">
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Delete a User"/>
-                    </form>
-                    <form method="POST" action="AdminService.do">
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Change my password"/>
                     </form>
 
