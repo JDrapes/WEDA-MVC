@@ -31,11 +31,14 @@
                         <h1>Welcome to your profile page</h1>
                         <fieldset>
                             <legend>Editable:</legend>
-                            Email: <input type="text" name="email" value="<%=(String) (request.getAttribute("username"))%>">
-                            Full name: <input type="text" name="name" value="<%=(String) (request.getAttribute("fullname"))%>">
-                            Date of Birth: <input type="text" name="dob" value="<%=(String) (request.getAttribute("dateofbirth"))%>">
+                            <form method="POST" action="AdminService.do">
+                            Email: <input type="text" name="username" value="<%=(String) (request.getAttribute("username"))%>">
+                            Full name: <input type="text" name="fullname" value="<%=(String) (request.getAttribute("fullname"))%>">
+                            Date of Birth: <input type="text" name="dateofbirth" value="<%=(String) (request.getAttribute("dateofbirth"))%>">
                             Address: <input type="text" name="address" value="<%=(String) (request.getAttribute("address"))%>">
-                        </fieldset>
+                            <input name="tbl" type="submit" id="signup" class="form-submit" value="Update profile details"/>
+                            </form>
+                            </fieldset>
 
                             
                         <fieldset>
@@ -45,7 +48,8 @@
                             Balance: <input type="text" name="accountBalance" value="<%=(String) (request.getAttribute("balance"))%>"readonly>
                         </fieldset>
                         
-                        <input name="tbl" type="submit" id="signup" class="form-submit" value="Update profile details"/>
+                        
+                        
 
                 </td>
 

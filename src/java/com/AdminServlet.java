@@ -9,6 +9,9 @@ import java.io.IOException;
 //import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -30,7 +33,7 @@ public class AdminServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, SQLException {
+            throws ServletException, IOException, SQLException, ParseException {
         String qry = "select * from users";
         //CREATE SESSION IF ONE DOES NOT ALREADY EXIST
         HttpSession session = request.getSession();
@@ -89,9 +92,9 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("username", username);
             request.setAttribute("msg", "del");
             request.getRequestDispatcher("/WEB-INF/user.jsp").forward(request, response);
-            
+
         } else if (request.getParameter("tbl").equals("Customer profile page")) {
-        //gets the session items
+            //gets the session items
             request.setAttribute("username", username);
             request.setAttribute("profiletype", profiletype);
             request.setAttribute("fullname", fullname);
@@ -99,10 +102,8 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("dateofregistration", dateofregistration);
             request.setAttribute("balance", balance);
             request.setAttribute("address", address);
-            request.getRequestDispatcher("/WEB-INF/customerPanel.jsp").forward(request, response);                      
-        }
-        
-        else if (request.getParameter("tbl").equals("Admin profile page")) {
+            request.getRequestDispatcher("/WEB-INF/customerPanel.jsp").forward(request, response);
+        } else if (request.getParameter("tbl").equals("Admin profile page")) {
             //gets the session items
             request.setAttribute("username", username);
             request.setAttribute("profiletype", profiletype);
@@ -182,6 +183,34 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
 
+        } //When updating profile page need to update details and redirect back to admin/user panel
+        else if (request.getParameter("tbl").equals("Update profile details")) {
+
+            String[] query = new String[3];
+
+            query[0] = (String) request.getParameter("username");
+            query[1] = (String) request.getParameter("fullname");
+            query[2] = (String) request.getParameter("address");
+            String stringdateofbirth = request.getParameter("dateofbirth");
+            dbBean.updatePersonalDetails(query, stringdateofbirth);
+
+            //gets the session items
+            request.setAttribute("username", query[0]);
+            request.setAttribute("profiletype", profiletype);
+            request.setAttribute("fullname", query[1]);
+            request.setAttribute("dateofbirth", stringdateofbirth);
+            request.setAttribute("dateofregistration", dateofregistration);
+            request.setAttribute("balance", balance);
+            request.setAttribute("address", query[2]);
+            //reload back onto the correct panel
+            
+            if(profiletype.equals("admin")){
+             request.getRequestDispatcher("/WEB-INF/adminPanel.jsp").forward(request, response);
+            } else {
+             request.getRequestDispatcher("/WEB-INF/customerPanel.jsp").forward(request, response);
+
+            }
+
         } //CUSTOMER FUNCTIONALITY
         //Check outstanding balance
         else if (request.getParameter("tbl").equals("Check outstanding balance")) {
@@ -221,6 +250,8 @@ public class AdminServlet extends HttpServlet {
             processRequest(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -238,6 +269,8 @@ public class AdminServlet extends HttpServlet {
         try {
             processRequest(request, response);
         } catch (SQLException ex) {
+            Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
             Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

@@ -193,6 +193,26 @@ public class Jdbc {
         }
         return result;
     }
+    
+        //This updates the password in the database based on the username
+    public void updatePersonalDetails(String[] str, String DOB) {         
+        Date date=Date.valueOf(DOB);                        
+        PreparedStatement ps = null;
+        try {
+            ps = connection.prepareStatement("Update Users set username=? , fullname=? , dateofbirth=? , address=? where username=?", PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setString(1, str[0]); //username
+            ps.setString(2, str[1]); //fullname
+            ps.setDate(3, date); //date
+            ps.setString(4, str[2]); //address
+            ps.setString(5, str[0]); //username 
+            ps.executeUpdate();
+
+            ps.close();
+            System.out.println("1 rows updated.");
+        } catch (SQLException ex) {
+            Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     public boolean upgradeProvisionalToMember(String upgradeUser) {
         PreparedStatement ps = null;
