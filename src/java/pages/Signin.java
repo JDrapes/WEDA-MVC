@@ -7,6 +7,9 @@ package pages;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -32,7 +35,7 @@ public class Signin extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         response.setContentType("text/html;charset=UTF-8");
        
          HttpSession session = request.getSession(false);
@@ -49,11 +52,48 @@ public class Signin extends HttpServlet {
             String username;
             
             switch (jdbc.loginSuccess(query[0],query[1])) {
+                
                 case 1: //Admin panel
                     request.getSession(); //GET THE SESSION IF ONE EXISTS, OTHERWISE CREATE ONE
-                    session.setAttribute("username",query[0]);
+                    //must update the session attributes on the admin servlet also on the case 1 and 2
+                    //Session and request set the username (email)
+                    session.setAttribute("username",query[0]); //Set username for the session
                     username=(String)session.getAttribute("username"); //getting username from session from login
-                    request.setAttribute("username",username);
+                    request.setAttribute("username",username); //Set username for the forwarding request
+                    
+                    //Session and request set the fullname
+                    String fullname = jdbc.returnDatabaseField(username, "fullname");
+                    session.setAttribute("fullname", fullname);
+                    request.setAttribute("fullname",fullname);
+                    
+                    //Session and request set the profiletype
+                    String profiletype = jdbc.returnDatabaseField(username, "profiletype");
+                    session.setAttribute("profiletype", profiletype);
+                    request.setAttribute("profiletype",profiletype);
+                    
+                    //Session and request set the dateofbirth
+                    String dateofbirth = jdbc.returnDatabaseField(username, "dateofbirth");
+                    session.setAttribute("dateofbirth", dateofbirth);
+                    request.setAttribute("dateofbirth",dateofbirth);
+                    
+                    //Session and request set the dateofregistration
+                    String dateofregistration = jdbc.returnDatabaseField(username, "dateofregistration");
+                    session.setAttribute("dateofregistration", dateofregistration);
+                    request.setAttribute("dateofregistration",dateofregistration);
+                    
+                    //Session and request set the balance
+                    String balance = jdbc.returnDatabaseField(username, "balance");
+                    session.setAttribute("balance", balance);
+                    request.setAttribute("balance",balance);
+                    
+                    //Session and request set the balance
+                    String address = jdbc.returnDatabaseField(username, "address");
+                    session.setAttribute("address", address);
+                    request.setAttribute("address",address);
+
+                    
+                    
+                    //Dispatch to the admin panel
                     request.getRequestDispatcher("/WEB-INF/adminPanel.jsp").forward(request, response);
                     request.setAttribute("msg", "Succesful login");
                       
@@ -88,7 +128,11 @@ public class Signin extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(Signin.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -102,7 +146,11 @@ public class Signin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(Signin.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

@@ -15,7 +15,10 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Time;
 import static java.sql.Types.NULL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -141,10 +144,19 @@ public class Jdbc {
     public void insert(String[] str) {
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("INSERT INTO Users VALUES (?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
-            ps.setString(1, str[0].trim());
-            ps.setString(2, str[1]);
-            ps.setString(3, str[2]);
+            //Get todays date for the date of registration
+            java.util.Date utilDate = new java.util.Date();
+            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+            
+            ps = connection.prepareStatement("INSERT INTO Users VALUES (?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setString(1, str[0].trim()); //Username (email)
+            ps.setString(2, str[1]); //Password
+            ps.setString(3, str[2]); //Profile type
+            ps.setString(4, " "); //Fullname 
+            ps.setString(5, str[3]); //Date of birth
+            ps.setDate(6, sqlDate); //Date of registration 
+            ps.setDouble(7, 0.00); //Balance
+            ps.setString(8, " "); //Address
             ps.executeUpdate();
 
             ps.close();
@@ -169,6 +181,17 @@ public class Jdbc {
         } catch (SQLException ex) {
             Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    //Pass the parameter of username and the table column to return the individual record.
+    //this is used on the profile page!
+    public String returnDatabaseField(String username, String column) throws SQLException {
+        String result = "";
+        select("select * from users where username='" + username + "'");
+        while (rs.next()) {
+            result = rs.getString(column);
+        }
+        return result;
     }
 
     public boolean upgradeProvisionalToMember(String upgradeUser) {
@@ -252,8 +275,7 @@ public class Jdbc {
         return false;
 
     }
-    
-    
+
     //this function deletes a record frm database, parameter is the username
     public void deleteUser(String upgradeUser) {
 

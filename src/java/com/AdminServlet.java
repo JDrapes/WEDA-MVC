@@ -30,11 +30,10 @@ public class AdminServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
         String qry = "select * from users";
         //CREATE SESSION IF ONE DOES NOT ALREADY EXIST
         HttpSession session = request.getSession();
-        String username = (String) session.getAttribute("username"); //getting username from session from login
 
         response.setContentType("text/html;charset=UTF-8");
 
@@ -45,6 +44,21 @@ public class AdminServlet extends HttpServlet {
         if ((Connection) request.getServletContext().getAttribute("connection") == null) {
             request.getRequestDispatcher("/WEB-INF/conErr.jsp").forward(request, response);
         }
+
+        //When we pass the login page we need to assign the profile page values from DB to session.
+        String username = (String) session.getAttribute("username"); //getting username from session from login
+        String fullname = dbBean.returnDatabaseField(username, "fullname");
+        session.setAttribute("fullname", fullname);
+        String profiletype = dbBean.returnDatabaseField(username, "profiletype");
+        session.setAttribute("profiletype", profiletype);
+        String dateofbirth = dbBean.returnDatabaseField(username, "dateofbirth");
+        session.setAttribute("dateofbirth", dateofbirth);
+        String dateofregistration = dbBean.returnDatabaseField(username, "dateofregistration");
+        session.setAttribute("dateofregistration", dateofregistration);
+        String balance = dbBean.returnDatabaseField(username, "balance");
+        session.setAttribute("balance", balance);
+        String address = dbBean.returnDatabaseField(username, "address");
+        session.setAttribute("address", address);
 
         //ADMIN FUNCTION
         if (request.getParameter("tbl").equals("List Users")) {
@@ -76,12 +90,20 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("msg", "del");
             request.getRequestDispatcher("/WEB-INF/user.jsp").forward(request, response);
         } else if (request.getParameter("tbl").equals("Admin profile page")) {
+            //Creating the string results for the session stored user...
+
             request.setAttribute("username", username);
+            request.setAttribute("profiletype", profiletype);
+            request.setAttribute("fullname", fullname);
+            request.setAttribute("dateofbirth", dateofbirth);
+            request.setAttribute("dateofregistration", dateofregistration);
+            request.setAttribute("balance", balance);
+            request.setAttribute("address", address);
+
             request.getRequestDispatcher("/WEB-INF/adminPanel.jsp").forward(request, response);
         } //Function to take you to the page to manage memberships.
         else if (request.getParameter("tbl").equals("Manage Memberships")) {
-            qry = "select username, profiletype from users";
-            //Alter qry to equal something else.
+            qry = "select username, profiletype from users";//Only want to put username and prof type in the table
             String msg = "No users";
             try {
                 msg = dbBean.retrieve(qry);
@@ -93,7 +115,7 @@ public class AdminServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
 
         } else if (request.getParameter("tbl").equals("Upgrade provisional member")) {
-            qry = "select username, profiletype from users";
+            qry = "select username, profiletype from users";//Only want to put username and prof type in the table
             String upgradeUser = (String) request.getParameter("userToUpgrade");
             dbBean.upgradeProvisionalToMember(upgradeUser);
             String msg = "No users";
@@ -107,7 +129,7 @@ public class AdminServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
         } //Logic to suspend a membership
         else if (request.getParameter("tbl").equals("Suspend membership")) {
-            qry = "select username, profiletype from users";
+            qry = "select username, profiletype from users";//Only want to put username and prof type in the table
             String upgradeUser = (String) request.getParameter("userToUpgrade");
             dbBean.suspendMembership(upgradeUser);
             String msg = "No users";
@@ -122,7 +144,7 @@ public class AdminServlet extends HttpServlet {
 
         } //Logic to resume a suspended member
         else if (request.getParameter("tbl").equals("Resume membership")) {
-            qry = "select username, profiletype from users";
+            qry = "select username, profiletype from users";//Only want to put username and prof type in the table
             String upgradeUser = (String) request.getParameter("userToUpgrade");
             dbBean.resumeMembership(upgradeUser);
             String msg = "No users";
@@ -135,9 +157,8 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
 
-        } 
-        else if (request.getParameter("tbl").equals("Delete a user")) {
-            qry = "select username, profiletype from users";
+        } else if (request.getParameter("tbl").equals("Delete a user")) {
+            qry = "select username, profiletype from users"; //Only want to put username and prof type in the table
             String upgradeUser = (String) request.getParameter("userToUpgrade");
             dbBean.deleteUser(upgradeUser);
             String msg = "No users";
@@ -150,9 +171,7 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
 
-        } 
-        
-//CUSTOMER FUNCTIONALITY
+        } //CUSTOMER FUNCTIONALITY
         //Check outstanding balance
         else if (request.getParameter("tbl").equals("Check outstanding balance")) {
             request.setAttribute("username", username);
@@ -187,7 +206,11 @@ public class AdminServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -201,7 +224,11 @@ public class AdminServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

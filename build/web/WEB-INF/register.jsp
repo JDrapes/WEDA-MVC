@@ -53,8 +53,8 @@
                                     <input type="text" name="username" id="name" placeholder="Your email"/>
                                 </div>                    
                                 <div class="form-group">
-                                    <label for="dateOfBirth"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                    <input type="text" name="dateOfBirth" id="dateOfBirth" placeholder="Date of Birth"/>
+                                    <label for="dateofbirth"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                    <input type="text" name="dateofbirth" id="dateOfBirth" placeholder="Date of Birth YYYY-MM-DD"/>
                                 </div>
                                 <div class="form-group">
                                     <input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />

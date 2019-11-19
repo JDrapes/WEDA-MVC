@@ -33,17 +33,17 @@
                         <fieldset>
                             <legend>Editable:</legend>
                             Email: <input type="text" name="email" value="<%=(String) (request.getAttribute("username"))%>">
-                            Full name: <input type="text" name="name" value="">
-                            Date of Birth: <input type="text" name="dob" value="">
-                            Address: <input type="text" name="address" value="">
+                            Full name: <input type="text" name="name" value="<%=(String) (request.getAttribute("fullname"))%>">
+                            Date of Birth: <input type="text" name="dob" value="<%=(String) (request.getAttribute("dateofbirth"))%>">
+                            Address: <input type="text" name="address" value="<%=(String) (request.getAttribute("address"))%>">
                         </fieldset>
 
                             
                         <fieldset>
                             <legend>Non-Editable information:</legend>
-                            Date of Registration: <input type="text" name="registrationDate" value="">
-                            Profile Type <input type="text" name="profileType" value="">
-                            Balance <input type="text" name="accountBalance" value="">
+                            Date of Registration: <input type="text" name="registrationDate" value="<%=(String) (request.getAttribute("dateofregistration"))%>">
+                            Profile Type <input type="text" name="profileType" value="<%=(String) (request.getAttribute("profiletype"))%>">
+                            Balance <input type="text" name="accountBalance" value="<%=(String) (request.getAttribute("balance"))%>">
                         </fieldset>
 
                 </td>

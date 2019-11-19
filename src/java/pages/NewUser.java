@@ -7,6 +7,7 @@ package pages;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -39,10 +40,12 @@ public class NewUser extends HttpServlet {
 
         Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
 
-        String[] query = new String[3];
+        String[] query = new String[4];
         query[0] = (String) request.getParameter("username");
-        query[1] = jdbc.generateRandomPassword();
-        query[2] = "provisional";
+        query[1] = jdbc.generateRandomPassword(); //Generate  random password
+        query[2] = "provisional"; //When registering user needs to be provisional license
+        query[3] = (String) request.getParameter("dateofbirth"); //Date of birth
+        
         //String insert = "INSERT INTO `Users` (`username`, `password`) VALUES ('";
 
         
@@ -51,8 +54,8 @@ public class NewUser extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/conErr.jsp").forward(request, response);
         }
 
-        if (query[0].equals("")) {
-            request.setAttribute("message", "Username cannot be NULL");
+        if (query[0].equals("")||query[3].equals("")) {
+            request.setAttribute("message", "Username and Date of Birth cannot be NULL");
         } else if (jdbc.exists(query[0])) {
             request.setAttribute("message", query[0] + " is already taken as username");
         } else {
