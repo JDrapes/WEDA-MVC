@@ -28,7 +28,7 @@
                 </td>
                 <td float="left">
                     
-                    <div class="contentsOfPage">
+                    <div class="contents">
                         <h1>Welcome to your profile page</h1>
                         <fieldset>
                             <legend>Editable:</legend>
@@ -41,9 +41,9 @@
                             
                         <fieldset>
                             <legend>Non-Editable information:</legend>
-                            Date of Registration: <input type="text" name="registrationDate" value="<%=(String) (request.getAttribute("dateofregistration"))%>">
-                            Profile Type <input type="text" name="profileType" value="<%=(String) (request.getAttribute("profiletype"))%>">
-                            Balance <input type="text" name="accountBalance" value="<%=(String) (request.getAttribute("balance"))%>">
+                            Date of Registration: <input type="text" name="registrationDate" value="<%=(String) (request.getAttribute("dateofregistration"))%>"readonly>
+                            Profile Type: <input type="text" name="profileType" value="<%=(String) (request.getAttribute("profiletype"))%>"readonly>
+                            Balance: <input type="text" name="accountBalance" value="<%=(String) (request.getAttribute("balance"))%>"readonly>
                         </fieldset>
 
                 </td>

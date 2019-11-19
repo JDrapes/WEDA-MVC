@@ -89,9 +89,9 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("username", username);
             request.setAttribute("msg", "del");
             request.getRequestDispatcher("/WEB-INF/user.jsp").forward(request, response);
-        } else if (request.getParameter("tbl").equals("Admin profile page")) {
-            //Creating the string results for the session stored user...
-
+            
+        } else if (request.getParameter("tbl").equals("Customer profile page")) {
+        //gets the session items
             request.setAttribute("username", username);
             request.setAttribute("profiletype", profiletype);
             request.setAttribute("fullname", fullname);
@@ -99,7 +99,18 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("dateofregistration", dateofregistration);
             request.setAttribute("balance", balance);
             request.setAttribute("address", address);
-
+            request.getRequestDispatcher("/WEB-INF/customerPanel.jsp").forward(request, response);                      
+        }
+        
+        else if (request.getParameter("tbl").equals("Admin profile page")) {
+            //gets the session items
+            request.setAttribute("username", username);
+            request.setAttribute("profiletype", profiletype);
+            request.setAttribute("fullname", fullname);
+            request.setAttribute("dateofbirth", dateofbirth);
+            request.setAttribute("dateofregistration", dateofregistration);
+            request.setAttribute("balance", balance);
+            request.setAttribute("address", address);
             request.getRequestDispatcher("/WEB-INF/adminPanel.jsp").forward(request, response);
         } //Function to take you to the page to manage memberships.
         else if (request.getParameter("tbl").equals("Manage Memberships")) {

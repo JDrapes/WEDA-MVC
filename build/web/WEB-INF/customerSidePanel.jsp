@@ -26,6 +26,7 @@
                     <h3><h3><%=(String) (request.getAttribute("username"))%></h3></h3>
                     <!-- buttons below -->
                     <form method="POST" action="AdminService.do">
+                        <input name="tbl" type="submit" class="btn btn-secondary" value="Customer profile page"/>
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Check outstanding balance"/>
                         <input name="tbl" type="submit" class="btn btn-secondary" value="List all payments and claims to date"/>
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Make a payment"/>
@@ -36,8 +37,6 @@
                     <!-- end of buttons -->
                 </div>
                 <div class="content">
-                    <h1>Title</h1>
-
 
                 </div>
             </div>

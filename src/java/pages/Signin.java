@@ -100,9 +100,39 @@ public class Signin extends HttpServlet {
                     break;
                 case 2: //Customer panel
                     request.getSession(); //GET THE SESSION IF ONE EXISTS, OTHERWISE CREATE ONE 
-                    session.setAttribute("username",query[0]);
+                    session.setAttribute("username",query[0]); //Set username for the session
                     username=(String)session.getAttribute("username"); //getting username from session from login
-                    request.setAttribute("username",username);
+                    request.setAttribute("username",username); //Set username for the forwarding request
+                    
+                    //Session and request set the fullname
+                    fullname = jdbc.returnDatabaseField(username, "fullname");
+                    session.setAttribute("fullname", fullname);
+                    request.setAttribute("fullname",fullname);
+                    
+                    //Session and request set the profiletype
+                    profiletype = jdbc.returnDatabaseField(username, "profiletype");
+                    session.setAttribute("profiletype", profiletype);
+                    request.setAttribute("profiletype",profiletype);
+                    
+                    //Session and request set the dateofbirth
+                    dateofbirth = jdbc.returnDatabaseField(username, "dateofbirth");
+                    session.setAttribute("dateofbirth", dateofbirth);
+                    request.setAttribute("dateofbirth",dateofbirth);
+                    
+                    //Session and request set the dateofregistration
+                    dateofregistration = jdbc.returnDatabaseField(username, "dateofregistration");
+                    session.setAttribute("dateofregistration", dateofregistration);
+                    request.setAttribute("dateofregistration",dateofregistration);
+                    
+                    //Session and request set the balance
+                    balance = jdbc.returnDatabaseField(username, "balance");
+                    session.setAttribute("balance", balance);
+                    request.setAttribute("balance",balance);
+                    
+                    //Session and request set the balance
+                    address = jdbc.returnDatabaseField(username, "address");
+                    session.setAttribute("address", address);
+                    request.setAttribute("address",address);
                     request.getRequestDispatcher("/WEB-INF/customerPanel.jsp").forward(request, response);
                     request.setAttribute("msg", "Succesful login");
                      
