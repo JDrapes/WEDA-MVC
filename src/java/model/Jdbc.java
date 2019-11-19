@@ -252,12 +252,13 @@ public class Jdbc {
         return false;
 
     }
-
+    
+    
     //this function deletes a record frm database, parameter is the username
-    public void delete(String user) {
+    public void deleteUser(String upgradeUser) {
 
         String query = "DELETE FROM Users "
-                + "WHERE username = '" + user.trim() + "'";
+                + "WHERE username = '" + upgradeUser.trim() + "'";
 
         try {
             statement = connection.createStatement();

@@ -75,6 +75,9 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("username", username);
             request.setAttribute("msg", "del");
             request.getRequestDispatcher("/WEB-INF/user.jsp").forward(request, response);
+        } else if (request.getParameter("tbl").equals("Admin profile page")) {
+            request.setAttribute("username", username);
+            request.getRequestDispatcher("/WEB-INF/adminPanel.jsp").forward(request, response);
         } //Function to take you to the page to manage memberships.
         else if (request.getParameter("tbl").equals("Manage Memberships")) {
             String msg = "No users";
@@ -127,7 +130,23 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
 
-        } //CUSTOMER FUNCTIONALITY
+        } 
+        else if (request.getParameter("tbl").equals("Delete a user")) {
+            String upgradeUser = (String) request.getParameter("userToUpgrade");
+            dbBean.deleteUser(upgradeUser);
+            String msg = "No users";
+            try {
+                msg = dbBean.retrieve(qry);
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            request.setAttribute("query", msg);
+            request.setAttribute("username", username);
+            request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
+
+        } 
+        
+//CUSTOMER FUNCTIONALITY
         //Check outstanding balance
         else if (request.getParameter("tbl").equals("Check outstanding balance")) {
             request.setAttribute("username", username);

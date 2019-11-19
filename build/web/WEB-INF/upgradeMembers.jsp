@@ -22,9 +22,11 @@
                         
                         <form action="AdminService.do" method="POST">
                             <input type="text" name="userToUpgrade" id="userToUpgrade" placeholder="Enter a username to upgrade"/>
-                            <input name="tbl" type="submit" name="UpgradeProvisionalToMember" id="signup" class="form-submit" value="Upgrade provisional member"/>
-                            <input name="tbl" type="submit" name="UpgradeProvisionalToMember" id="signup" class="form-submit" value="Suspend membership"/>
-                            <input name="tbl" type="submit" name="UpgradeProvisionalToMember" id="signup" class="form-submit" value="Resume membership"/>
+                            <input name="tbl" type="submit" id="signup" class="form-submit" value="Upgrade provisional member"/>
+                            <input name="tbl" type="submit" id="signup" class="form-submit" value="Suspend membership"/>
+                            <input name="tbl" type="submit" id="signup" class="form-submit" value="Resume membership"/>
+                            <input name="tbl" type="submit" id="signup" class="form-submit" value="Delete a user"/>
+
                         </form>
 
 

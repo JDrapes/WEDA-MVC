@@ -33,22 +33,19 @@
                     <h3><%=(String) (request.getAttribute("username"))%></h3>
                     <!-- buttons below -->
                     <form method="POST" action="AdminService.do">
+                        <input name="tbl" type="submit" class="btn btn-secondary" value="Admin profile page"/>
                         <!-- List all users --> 
                         <input name="tbl" type="submit" class="btn btn-secondary" value="List Users"/>
                         <!-- List all outstanding balances --> 
                         <input name="tbl" type="submit" class="btn btn-secondary" value="List all oustanding balances"/>
                         <!-- List all claims --> 
                         <input name="tbl" type="submit" class="btn btn-secondary" value="List all claims"/>
-                        <!-- List all professional membership applications with option to upgrade them -->
+                        <!-- List all professional membership applications with option to upgrade them, also suspend/resume memberships -->
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Manage Memberships"/> 
                         <!-- Process individual claims --> 
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Process individual claims"/>
-                        <!-- Suspend or resume memberships --> 
-                        <input name="tbl" type="submit" class="btn btn-secondary" value="Suspend/Resume memberships"/>
                         <!-- Annual turnover including total income and total pay-outs --> 
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Annual turnover inc total income and total pay-outs"/>
-                        <!-- Delete a users account  --> 
-                        <input name="tbl" type="submit" class="btn btn-secondary" value="Delete a User"/>
                         <!-- Change your password  --> 
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Change my password"/>
                     </form>
