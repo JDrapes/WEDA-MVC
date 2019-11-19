@@ -23,20 +23,21 @@
             <div class="row">
                 <div class="sidebar text-center">
                     <img src="https://s3.amazonaws.com/uifaces/faces/twitter/mantia/128.jpg" class="img-circle">
-                    <h3>Customer Name</h3>
+                    <h3><h3><%=(String) (request.getAttribute("username"))%></h3></h3>
                     <!-- buttons below -->
-                    <form method="get" action="">
-                        <input name="button" type="submit" class="btn btn-secondary" value="Check outstanding balance"/>
-                        <input name="button" type="submit" class="btn btn-secondary" value="List all payments and claims to date"/>
-                        <input name="button" type="submit" class="btn btn-secondary" value="Make a payment"/>
-                        <input name="button" type="submit" class="btn btn-secondary" value="Submit a claim"/>
+                    <form method="POST" action="AdminService.do">
+                        <input name="tbl" type="submit" class="btn btn-secondary" value="Check outstanding balance"/>
+                        <input name="tbl" type="submit" class="btn btn-secondary" value="List all payments and claims to date"/>
+                        <input name="tbl" type="submit" class="btn btn-secondary" value="Make a payment"/>
+                        <input name="tbl" type="submit" class="btn btn-secondary" value="Submit a claim"/>                    
                     </form>
-                
+
+
                     <!-- end of buttons -->
                 </div>
                 <div class="content">
                     <h1>Title</h1>
-                    
+
 
                 </div>
             </div>

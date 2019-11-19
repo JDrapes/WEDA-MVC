@@ -40,11 +40,7 @@
                         <!-- List all claims --> 
                         <input name="tbl" type="submit" class="btn btn-secondary" value="List all claims"/>
                         <!-- List all professional membership applications with option to upgrade them -->
-                        <input name="tbl" type="submit" class="btn btn-secondary" value="Manage Memberships"/>
-                        <!-- List all professional membership applications --> 
-                        <input name="tbl" type="submit" class="btn btn-secondary" value="List all professional member applications"/>
-                        <!-- Process membership applications & upgrade if payment was made --> 
-                        <input name="tbl" type="submit" class="btn btn-secondary" value="Process membership applications & upgrade if payment was made"/>
+                        <input name="tbl" type="submit" class="btn btn-secondary" value="Manage Memberships"/> 
                         <!-- Process individual claims --> 
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Process individual claims"/>
                         <!-- Suspend or resume memberships --> 

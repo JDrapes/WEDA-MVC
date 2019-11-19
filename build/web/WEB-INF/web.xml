@@ -16,10 +16,6 @@
         <servlet-name>Logout</servlet-name>
         <servlet-class>pages.Logout</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>UpgradeProvisionalToMember</servlet-name>
-        <servlet-class>pages.UpgradeProvisionalToMember</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>AdminServLet</servlet-name>
         <url-pattern>/AdminService.do</url-pattern>
@@ -47,10 +43,6 @@
     <servlet-mapping>
         <servlet-name>Logout</servlet-name>
         <url-pattern>/Logout.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UpgradeProvisionalToMember</servlet-name>
-        <url-pattern>/UpgradeProvisionalToMember.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

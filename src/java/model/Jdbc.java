@@ -171,14 +171,14 @@ public class Jdbc {
         }
     }
 
-    public void upgradeProvisionalToMember(String upgradeUser) {
+    public boolean upgradeProvisionalToMember(String upgradeUser) {
         PreparedStatement ps = null;
         try {
             ps = connection.prepareStatement("Update Users Set profiletype=? where username=?", PreparedStatement.RETURN_GENERATED_KEYS);
 
             ps.setString(1, "customer");
             ps.setString(2, upgradeUser);
-            
+
             select("select * from users"); //Before changing to "customer" check that they are actually provisional
             while (rs.next()) {
                 if (rs.getString("username").equals(upgradeUser)) {
@@ -187,12 +187,15 @@ public class Jdbc {
                         ps.executeUpdate();
                         ps.close();
                         System.out.println("Member upgraded.");
+                        return true;
+
                     }
                 }
             }
         } catch (SQLException ex) {
             Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return false;
     }
 
     //this function deletes a record frm database, parameter is the username
