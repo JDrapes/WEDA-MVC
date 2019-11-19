@@ -44,6 +44,8 @@
                             Profile Type: <input type="text" name="profileType" value="<%=(String) (request.getAttribute("profiletype"))%>"readonly>
                             Balance: <input type="text" name="accountBalance" value="<%=(String) (request.getAttribute("balance"))%>"readonly>
                         </fieldset>
+                        
+                        <input name="tbl" type="submit" id="signup" class="form-submit" value="Update profile details"/>
 
                 </td>
 
