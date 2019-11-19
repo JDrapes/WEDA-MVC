@@ -25,9 +25,6 @@
                         <%=(String) (request.getAttribute("query"))%>
                         <%=(String) (request.getAttribute("username"))%>
 
-
-
-                        <jsp:include page="/WEB-INF/foot.jsp"/>
                 </td>
 
             </tr>

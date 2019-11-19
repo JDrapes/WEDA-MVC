@@ -80,6 +80,8 @@ public class AdminServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/adminPanel.jsp").forward(request, response);
         } //Function to take you to the page to manage memberships.
         else if (request.getParameter("tbl").equals("Manage Memberships")) {
+            qry = "select username, profiletype from users";
+            //Alter qry to equal something else.
             String msg = "No users";
             try {
                 msg = dbBean.retrieve(qry);
@@ -91,6 +93,7 @@ public class AdminServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
 
         } else if (request.getParameter("tbl").equals("Upgrade provisional member")) {
+            qry = "select username, profiletype from users";
             String upgradeUser = (String) request.getParameter("userToUpgrade");
             dbBean.upgradeProvisionalToMember(upgradeUser);
             String msg = "No users";
@@ -104,6 +107,7 @@ public class AdminServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
         } //Logic to suspend a membership
         else if (request.getParameter("tbl").equals("Suspend membership")) {
+            qry = "select username, profiletype from users";
             String upgradeUser = (String) request.getParameter("userToUpgrade");
             dbBean.suspendMembership(upgradeUser);
             String msg = "No users";
@@ -118,6 +122,7 @@ public class AdminServlet extends HttpServlet {
 
         } //Logic to resume a suspended member
         else if (request.getParameter("tbl").equals("Resume membership")) {
+            qry = "select username, profiletype from users";
             String upgradeUser = (String) request.getParameter("userToUpgrade");
             dbBean.resumeMembership(upgradeUser);
             String msg = "No users";
@@ -132,6 +137,7 @@ public class AdminServlet extends HttpServlet {
 
         } 
         else if (request.getParameter("tbl").equals("Delete a user")) {
+            qry = "select username, profiletype from users";
             String upgradeUser = (String) request.getParameter("userToUpgrade");
             dbBean.deleteUser(upgradeUser);
             String msg = "No users";

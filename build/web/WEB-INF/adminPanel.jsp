@@ -21,8 +21,37 @@
 
         <jsp:include page="/WEB-INF/navigationBar.jsp"/> 
 
-        <jsp:include page="/WEB-INF/adminSidePanel.jsp"/> 
+        <table float="top" height="100%" cellpadding="0">
+            <tr>
+                <td>
+                    <jsp:include page="/WEB-INF/adminSidePanel.jsp"/> 
+                </td>
+                <td float="left">
+                    
+                    <div class="contentsOfPage">
+                        <h1>Welcome to your profile page</h1>
+                        <fieldset>
+                            <legend>Editable:</legend>
+                            Email: <input type="text" name="email" value="<%=(String) (request.getAttribute("username"))%>">
+                            Full name: <input type="text" name="name" value="">
+                            Date of Birth: <input type="text" name="dob" value="">
+                            Address: <input type="text" name="address" value="">
+                        </fieldset>
 
-    </body>
+                            
+                        <fieldset>
+                            <legend>Non-Editable information:</legend>
+                            Date of Registration: <input type="text" name="registrationDate" value="">
+                            Profile Type <input type="text" name="profileType" value="">
+                            Balance <input type="text" name="accountBalance" value="">
+                        </fieldset>
+
+                </td>
+
+            </tr>
+        </div>
+    </table>
+
+</body>
 </html>
 

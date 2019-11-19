@@ -28,11 +28,6 @@
                             <input name="tbl" type="submit" id="signup" class="form-submit" value="Delete a user"/>
 
                         </form>
-
-
-
-
-                        <jsp:include page="/WEB-INF/foot.jsp"/>
                 </td>
 
             </tr>

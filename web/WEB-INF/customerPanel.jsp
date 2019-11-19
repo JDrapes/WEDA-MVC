@@ -21,6 +21,7 @@
 
         <jsp:include page="/WEB-INF/navigationBar.jsp"/>
         <jsp:include page="/WEB-INF/customerSidePanel.jsp"/>
+        <h1>T</h1>
 
     </body>
 </html>
