@@ -198,6 +198,61 @@ public class Jdbc {
         return false;
     }
 
+    public boolean resumeMembership(String upgradeUser) {
+        PreparedStatement ps = null;
+        try {
+            ps = connection.prepareStatement("Update Users Set profiletype=? where username=?", PreparedStatement.RETURN_GENERATED_KEYS);
+
+            ps.setString(1, "provisional");
+            ps.setString(2, upgradeUser);
+
+            select("select * from users"); //Before changing to "customer" check that they are actually suspended
+            while (rs.next()) {
+                if (rs.getString("username").equals(upgradeUser)) {
+                    if (rs.getString("profiletype").equals("suspended")) {
+                        //If user exists in database & is provisional then we can execute the statement.
+                        ps.executeUpdate();
+                        ps.close();
+                        System.out.println("Member upgraded.");
+                        return true;
+
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+
+    }
+
+    public boolean suspendMembership(String upgradeUser) {
+        PreparedStatement ps = null;
+        try {
+            ps = connection.prepareStatement("Update Users Set profiletype=? where username=?", PreparedStatement.RETURN_GENERATED_KEYS);
+
+            ps.setString(1, "suspended");
+            ps.setString(2, upgradeUser);
+
+            select("select * from users"); //Suspend the selected member
+            while (rs.next()) {
+                if (rs.getString("username").equals(upgradeUser)) {
+                    //If user exists in database & is provisional then we can execute the statement.
+                    ps.executeUpdate();
+                    ps.close();
+                    System.out.println("Member upgraded.");
+                    return true;
+
+                }
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
+
+    }
+
     //this function deletes a record frm database, parameter is the username
     public void delete(String user) {
 

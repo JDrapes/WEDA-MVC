@@ -18,8 +18,8 @@
                         <h1>Listing all members: use the form below to upgrade members</h1>
                         <p>Members must pay to upgrade their accounts!</p>
 
-                        <%=(String) (request.getAttribute("query"))%>                 
-
+                        <%=(String) (request.getAttribute("query"))%>    
+                        
                         <form action="AdminService.do" method="POST">
                             <input type="text" name="userToUpgrade" id="userToUpgrade" placeholder="Enter a username to upgrade"/>
                             <input name="tbl" type="submit" name="UpgradeProvisionalToMember" id="signup" class="form-submit" value="Upgrade provisional member"/>

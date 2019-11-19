@@ -86,10 +86,10 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("query", msg);
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
-            
+
         } else if (request.getParameter("tbl").equals("Upgrade provisional member")) {
             String upgradeUser = (String) request.getParameter("userToUpgrade");
-            dbBean.upgradeProvisionalToMember(upgradeUser); 
+            dbBean.upgradeProvisionalToMember(upgradeUser);
             String msg = "No users";
             try {
                 msg = dbBean.retrieve(qry);
@@ -98,10 +98,36 @@ public class AdminServlet extends HttpServlet {
             }
             request.setAttribute("query", msg);
             request.setAttribute("username", username);
-            request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);    
-        } 
+            request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
+        } //Logic to suspend a membership
+        else if (request.getParameter("tbl").equals("Suspend membership")) {
+            String upgradeUser = (String) request.getParameter("userToUpgrade");
+            dbBean.suspendMembership(upgradeUser);
+            String msg = "No users";
+            try {
+                msg = dbBean.retrieve(qry);
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            request.setAttribute("query", msg);
+            request.setAttribute("username", username);
+            request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
 
-        //CUSTOMER FUNCTIONALITY
+        } //Logic to resume a suspended member
+        else if (request.getParameter("tbl").equals("Resume membership")) {
+            String upgradeUser = (String) request.getParameter("userToUpgrade");
+            dbBean.resumeMembership(upgradeUser);
+            String msg = "No users";
+            try {
+                msg = dbBean.retrieve(qry);
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            request.setAttribute("query", msg);
+            request.setAttribute("username", username);
+            request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
+
+        } //CUSTOMER FUNCTIONALITY
         //Check outstanding balance
         else if (request.getParameter("tbl").equals("Check outstanding balance")) {
             request.setAttribute("username", username);
