@@ -148,7 +148,7 @@ public class Jdbc {
             java.util.Date utilDate = new java.util.Date();
             java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
             
-            ps = connection.prepareStatement("INSERT INTO Users VALUES (?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            ps = connection.prepareStatement("INSERT INTO Users VALUES (?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1, str[0].trim()); //Username (email)
             ps.setString(2, str[1]); //Password
             ps.setString(3, str[2]); //Profile type
@@ -157,6 +157,7 @@ public class Jdbc {
             ps.setDate(6, sqlDate); //Date of registration 
             ps.setDouble(7, 0.00); //Balance
             ps.setString(8, " "); //Address
+            ps.setDouble(9, 500); //Outstanding balance set the user 500 in debt.
             ps.executeUpdate();
 
             ps.close();
