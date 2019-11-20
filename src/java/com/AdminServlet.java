@@ -223,6 +223,7 @@ public class AdminServlet extends HttpServlet {
         } //Make a payment
         else if (request.getParameter("tbl").equals("Make a payment")) {
             request.setAttribute("username", username);
+            request.getRequestDispatcher("/WEB-INF/makeAPayment.jsp").forward(request,response);
 
         } //Submit a claim
         else if (request.getParameter("tbl").equals("Submit a claim")) {
