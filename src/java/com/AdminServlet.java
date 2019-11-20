@@ -219,6 +219,8 @@ public class AdminServlet extends HttpServlet {
         } //List all payments and claims to date
         else if (request.getParameter("tbl").equals("List all payments and claims to date")) {
             request.setAttribute("username", username);
+            request.getRequestDispatcher("/WEB-INF/listPersonalClaimsAndPayments.jsp").forward(request,response);
+
 
         } //Make a payment
         else if (request.getParameter("tbl").equals("Make a payment")) {
