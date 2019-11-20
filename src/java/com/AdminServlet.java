@@ -113,7 +113,17 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("balance", balance);
             request.setAttribute("address", address);
             request.getRequestDispatcher("/WEB-INF/adminPanel.jsp").forward(request, response);
-        } //Function to take you to the page to manage memberships.
+        } //List all claims as an admin.
+        else if (request.getParameter("tbl").equals("List all claims")) {
+            request.setAttribute("username", username);
+            request.getRequestDispatcher("/WEB-INF/listAllClaims.jsp").forward(request, response);
+
+        }
+        else if (request.getParameter("tbl").equals("Process individual claims")) {
+            request.setAttribute("username", username);
+            request.getRequestDispatcher("/WEB-INF/processIndividualClaims.jsp").forward(request, response);
+
+        }//Function to take you to the page to manage memberships.
         else if (request.getParameter("tbl").equals("Manage Memberships")) {
             qry = "select username, profiletype from users";//Only want to put username and prof type in the table
             String msg = "No users";
@@ -203,11 +213,11 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("balance", balance);
             request.setAttribute("address", query[2]);
             //reload back onto the correct panel
-            
-            if(profiletype.equals("admin")){
-             request.getRequestDispatcher("/WEB-INF/adminPanel.jsp").forward(request, response);
+
+            if (profiletype.equals("admin")) {
+                request.getRequestDispatcher("/WEB-INF/adminPanel.jsp").forward(request, response);
             } else {
-             request.getRequestDispatcher("/WEB-INF/customerPanel.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/customerPanel.jsp").forward(request, response);
 
             }
 
@@ -219,13 +229,12 @@ public class AdminServlet extends HttpServlet {
         } //List all payments and claims to date
         else if (request.getParameter("tbl").equals("List all payments and claims to date")) {
             request.setAttribute("username", username);
-            request.getRequestDispatcher("/WEB-INF/listPersonalClaimsAndPayments.jsp").forward(request,response);
-
+            request.getRequestDispatcher("/WEB-INF/listPersonalClaimsAndPayments.jsp").forward(request, response);
 
         } //Make a payment
         else if (request.getParameter("tbl").equals("Make a payment")) {
             request.setAttribute("username", username);
-            request.getRequestDispatcher("/WEB-INF/makeAPayment.jsp").forward(request,response);
+            request.getRequestDispatcher("/WEB-INF/makeAPayment.jsp").forward(request, response);
 
         } //Submit a claim
         else if (request.getParameter("tbl").equals("Submit a claim")) {
