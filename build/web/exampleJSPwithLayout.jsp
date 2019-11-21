@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>West England Drivers Association</title>
+        <title>Two-column fixed layout</title>
         <link href="css/fixed-two-column.css" rel="stylesheet">
     </head>
     <body>
@@ -12,7 +12,7 @@
             </div>
             <div id="main">
                 <div id="menu">
-                    <jsp:include page="/WEB-INF/customerSidePanel.jsp"/> 
+                    <jsp:include page="/WEB-INF/adminSidePanel.jsp"/> 
                 </div>
                 <div id="content">
                     <h2>Content</h2>

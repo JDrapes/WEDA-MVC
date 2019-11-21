@@ -12,9 +12,11 @@
         <title>Change Password</title>
     </head>
     <body>
+        <jsp:include page="/WEB-INF/navigationBar.jsp"/> 
         <h2>Password change</h2>
-           <form method="POST" action="Update.do">     
+        <form method="POST" action="Update.do">     
             <table>
+               
                 <tr>
                     <th></th>
                     <th>Please provide your following details</th>
@@ -36,7 +38,7 @@
                 </tr>
             </table>
         </form>
-        <%=((String)(request.getAttribute("msg"))!=null)?(String)(request.getAttribute("msg")):""%>
-         <jsp:include page="/WEB-INF/foot.jsp"/>
+        <%=((String) (request.getAttribute("msg")) != null) ? (String) (request.getAttribute("msg")) : ""%>
+        <jsp:include page="/WEB-INF/foot.jsp"/>
     </body>
 </html>

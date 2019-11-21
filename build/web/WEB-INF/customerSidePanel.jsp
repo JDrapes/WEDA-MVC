@@ -21,7 +21,7 @@
     <body>
         <main class="pageContainer">
             <div class="row">
-                <div class="sidebar text-center">
+                <div style="height:100vh" class="sidebar text-center">
                     <img src="https://s3.amazonaws.com/uifaces/faces/twitter/mantia/128.jpg" class="img-circle">
                     <h3><h3><%=(String) (request.getAttribute("username"))%></h3></h3>
                     <!-- buttons below -->

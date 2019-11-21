@@ -1,38 +1,36 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+        <meta charset="UTF-8">
+        <title>West England Drivers Association</title>
+        <link href="css/fixed-two-column.css" rel="stylesheet">
     </head>
     <body>
-        <jsp:include page="/WEB-INF/navigationBar.jsp"/> 
-
-        <table float="left" height="100%" cellpadding="0">
-            <tr>
-                <td>
+        <div id="wrapper">
+            <div id="header">
+                <jsp:include page="/WEB-INF/navigationBar.jsp"/> 
+            </div>
+            <div id="main">
+                <div id="menu">
                     <jsp:include page="/WEB-INF/adminSidePanel.jsp"/> 
-                </td>
-                <td float="top">
-                    <div class="content">
-                        <h1>Listing all members: use the form below to upgrade members</h1>
-                        <p>Members must pay to upgrade their accounts!</p>
+                </div>
+                <div id="content">
+                    <h2>Listing all members: use the form below to upgrade members</h2>
+                    <p>Members must pay to upgrade their accounts!</p>
 
-                        <%=(String) (request.getAttribute("query"))%>    
-                        
-                        <form action="AdminService.do" method="POST">
-                            <input type="text" name="userToUpgrade" id="userToUpgrade" placeholder="Enter a username and press a button"/>
-                            <input name="tbl" type="submit" id="signup" class="form-submit" value="Upgrade provisional member"/>
-                            <input name="tbl" type="submit" id="signup" class="form-submit" value="Suspend membership"/>
-                            <input name="tbl" type="submit" id="signup" class="form-submit" value="Resume membership"/>
-                            <input name="tbl" type="submit" id="signup" class="form-submit" value="Delete a user"/>
+                    <%=(String) (request.getAttribute("query"))%>    
 
-                        </form>
-                </td>
+                    <form action="AdminService.do" method="POST">
+                        <input type="text" name="userToUpgrade" id="userToUpgrade" placeholder="Enter a username and press a button"/>
+                        <input name="tbl" type="submit" id="signup" class="form-submit" value="Upgrade provisional member"/>
+                        <input name="tbl" type="submit" id="signup" class="form-submit" value="Suspend membership"/>
+                        <input name="tbl" type="submit" id="signup" class="form-submit" value="Resume membership"/>
+                        <input name="tbl" type="submit" id="signup" class="form-submit" value="Delete a user"/>
 
-            </tr>
+                    </form>
+                </div>
+                <div class="clearer"></div>
+            </div>
         </div>
-    </table> 
-
-</body>
+    </body>
 </html>

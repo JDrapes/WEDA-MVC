@@ -1,34 +1,25 @@
-<%-- 
-    Document   : results
-    Created on : 30-Oct-2015, 10:02:53
-    Author     : me-aydin
---%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
+        <meta charset="UTF-8">
+        <title>West England Drivers Association</title>
+        <link href="css/fixed-two-column.css" rel="stylesheet">
     </head>
     <body>
-        <jsp:include page="/WEB-INF/navigationBar.jsp"/> 
-
-        <table float="left" height="100%" cellpadding="0">
-            <tr>
-                <td>
+        <div id="wrapper">
+            <div id="header">
+                <jsp:include page="/WEB-INF/navigationBar.jsp"/> 
+            </div>
+            <div id="main">
+                <div id="menu">
                     <jsp:include page="/WEB-INF/adminSidePanel.jsp"/> 
-                </td>
-                <td float="top">
-                    <div class="content">
-                        <h1>Listing all members</h1>
-
-                        <%=(String) (request.getAttribute("query"))%>
-
-                </td>
-
-            </tr>
+                </div>
+                <div id="content">
+                    <h2>Listing all members</h2>
+                    <%=(String) (request.getAttribute("query"))%>
+                </div>
+                <div class="clearer"></div>
+            </div>
         </div>
-    </table>
-
-</body>
+    </body>
 </html>
