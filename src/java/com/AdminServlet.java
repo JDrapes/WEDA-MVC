@@ -115,15 +115,54 @@ public class AdminServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/adminPanel.jsp").forward(request, response);
         } //List all claims as an admin.
         else if (request.getParameter("tbl").equals("List all claims")) {
+            //Set the query as selecting all from claims table
+            qry = "select * from claims";
+            String msg = "No users";
+            try {
+                msg = dbBean.retrieve(qry);
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            //Retrieve it on the page
+            request.setAttribute("query", msg);
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/listAllClaims.jsp").forward(request, response);
 
-        }
-        else if (request.getParameter("tbl").equals("Process individual claims")) {
+        } else if (request.getParameter("tbl").equals("Process individual claims")) {
+
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/processIndividualClaims.jsp").forward(request, response);
 
-        }//Function to take you to the page to manage memberships.
+        } else if (request.getParameter("tbl").equals("Show claim information")) {
+            //Need to take the info from the text field and use it to populate rest of fields
+            
+            request.setAttribute("username", username);
+            String claimid = (String) request.getParameter("claimid");
+            String claimnumber = dbBean.returnClaimCell(claimid, "claimid");
+            request.setAttribute("claimnumber", claimnumber);
+            String claimusername = dbBean.returnClaimCell(claimid, "username");
+            request.setAttribute("claimusername", claimusername);
+            String claimdescription = dbBean.returnClaimCell(claimid, "claimdescription");
+            request.setAttribute("claimdescription", claimdescription);
+            String claimdate = dbBean.returnClaimCell(claimid, "claimdate");
+            request.setAttribute("claimdate", claimdate);
+            String claimamount = dbBean.returnClaimCell(claimid, "claimamount");
+            request.setAttribute("claimamount", claimamount);
+            String claimstatus = dbBean.returnClaimCell(claimid, "claimstatus");
+            request.setAttribute("claimstatus", claimstatus);
+            request.getRequestDispatcher("/WEB-INF/processIndividualClaims.jsp").forward(request, response);
+
+        } else if (request.getParameter("tbl").equals("Payout claim")) {
+
+            request.setAttribute("username", username);
+            request.getRequestDispatcher("/WEB-INF/processIndividualClaims.jsp").forward(request, response);
+
+        } else if (request.getParameter("tbl").equals("Deny claim")) {
+
+            request.setAttribute("username", username);
+            request.getRequestDispatcher("/WEB-INF/processIndividualClaims.jsp").forward(request, response);
+
+        } //Function to take you to the page to manage memberships.
         else if (request.getParameter("tbl").equals("Manage Memberships")) {
             qry = "select username, profiletype from users";//Only want to put username and prof type in the table
             String msg = "No users";

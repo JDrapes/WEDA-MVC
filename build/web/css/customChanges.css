@@ -36,6 +36,7 @@ main .sidebar {
 	display: table-cell;
 	width: 300px;
         max-width: 300px;
+        min-width:300px;
 	background: #383435;
 	color: #aaa;
 	padding-top: 20px;

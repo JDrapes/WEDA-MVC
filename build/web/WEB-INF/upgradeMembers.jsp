@@ -21,7 +21,7 @@
                         <%=(String) (request.getAttribute("query"))%>    
                         
                         <form action="AdminService.do" method="POST">
-                            <input type="text" name="userToUpgrade" id="userToUpgrade" placeholder="Enter a username to upgrade"/>
+                            <input type="text" name="userToUpgrade" id="userToUpgrade" placeholder="Enter a username and press a button"/>
                             <input name="tbl" type="submit" id="signup" class="form-submit" value="Upgrade provisional member"/>
                             <input name="tbl" type="submit" id="signup" class="form-submit" value="Suspend membership"/>
                             <input name="tbl" type="submit" id="signup" class="form-submit" value="Resume membership"/>

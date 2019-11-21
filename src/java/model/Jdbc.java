@@ -194,6 +194,27 @@ public class Jdbc {
         }
         return result;
     }
+    //Database query on the claim table.
+    public String returnClaimCell(String claimid, String column) throws SQLException{
+        String result = "";
+        select("select * from claims where claimid='" + claimid + "'");
+        while (rs.next()) {
+            result = rs.getString(column);
+        }
+        return result;
+    }
+    //Function to deny a claim
+    public void denyClaim(){
+        
+        
+    }
+    
+    //Function to approve a claim
+    public void approveClaim(){
+        
+    }
+    
+    
     
         //This updates the password in the database based on the username
     public void updatePersonalDetails(String[] str, String DOB) {         

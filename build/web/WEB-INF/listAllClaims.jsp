@@ -22,6 +22,8 @@
                 <td float="top">
                     <div class="content">
                         <h1>List of all claims from all users below</h1>
+                        <%=(String) (request.getAttribute("query"))%>    
+
 
                         
                 </td>
