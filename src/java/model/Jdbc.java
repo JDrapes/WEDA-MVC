@@ -73,6 +73,8 @@ public class Jdbc {
         b.append("</table>");
         return b.toString();
     }//makeHtmlTable
+    
+    
 
     private void select(String query) {
         //Statement statement = null;

@@ -300,9 +300,19 @@ public class AdminServlet extends HttpServlet {
 
         } //List all payments and claims to date
         else if (request.getParameter("tbl").equals("List all payments and claims to date")) {
+             //Set the query as selecting all from claims table
+            qry = "select * from claims where username='" + username + "'";
+            String msg = "No users";
+            try {
+                msg = dbBean.retrieve(qry);
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            //Retrieve it on the page
+            request.setAttribute("query", msg);
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/listPersonalClaimsAndPayments.jsp").forward(request, response);
-
+           
         } //Make a payment
         else if (request.getParameter("tbl").equals("Make a payment")) {
             request.setAttribute("username", username);
