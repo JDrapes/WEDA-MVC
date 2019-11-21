@@ -129,13 +129,21 @@ public class AdminServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/listAllClaims.jsp").forward(request, response);
 
         } else if (request.getParameter("tbl").equals("Process individual claims")) {
-
+            request.setAttribute("message", "");
+            request.setAttribute("claimid", "");
+            request.setAttribute("claimnumber", "");
+            request.setAttribute("claimusername", "");
+            request.setAttribute("claimdate", "");
+            request.setAttribute("claimamount", "");
+            request.setAttribute("claimstatus", "");
+            request.setAttribute("claimdescription", "");
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/processIndividualClaims.jsp").forward(request, response);
 
         } else if (request.getParameter("tbl").equals("Show claim information")) {
             //Need to take the info from the text field and use it to populate rest of fields
-            
+
+            request.setAttribute("message", "");
             request.setAttribute("username", username);
             String claimid = (String) request.getParameter("claimid");
             String claimnumber = dbBean.returnClaimCell(claimid, "claimid");
@@ -153,15 +161,40 @@ public class AdminServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/processIndividualClaims.jsp").forward(request, response);
 
         } else if (request.getParameter("tbl").equals("Payout claim")) {
-
             request.setAttribute("username", username);
+            String claimnumber = (String) request.getParameter("claimnumber");
+            if (dbBean.approveClaim(claimnumber, username)) {
+                request.setAttribute("message", "Claim PAID - Enter a new claim number");
+            } else {
+                request.setAttribute("message", "There was an error with this request");
+
+            }
+            request.setAttribute("claimid", "");
+            request.setAttribute("claimnumber", "");
+            request.setAttribute("claimusername", "");
+            request.setAttribute("claimdate", "");
+            request.setAttribute("claimamount", "");
+            request.setAttribute("claimstatus", "");
+            request.setAttribute("claimdescription", "");
             request.getRequestDispatcher("/WEB-INF/processIndividualClaims.jsp").forward(request, response);
 
         } else if (request.getParameter("tbl").equals("Deny claim")) {
-
             request.setAttribute("username", username);
-            request.getRequestDispatcher("/WEB-INF/processIndividualClaims.jsp").forward(request, response);
+            String claimnumber = (String) request.getParameter("claimnumber");
+            if (dbBean.denyClaim(claimnumber)) {
+                request.setAttribute("message", "Claim DENIED - Enter a new claim number");
+            } else {
+                request.setAttribute("message", "There was an error with this request");
 
+            }
+            request.setAttribute("claimid", "");
+            request.setAttribute("claimnumber", "");
+            request.setAttribute("claimusername", "");
+            request.setAttribute("claimdate", "");
+            request.setAttribute("claimamount", "");
+            request.setAttribute("claimstatus", "");
+            request.setAttribute("claimdescription", "");
+            request.getRequestDispatcher("/WEB-INF/processIndividualClaims.jsp").forward(request, response);
         } //Function to take you to the page to manage memberships.
         else if (request.getParameter("tbl").equals("Manage Memberships")) {
             qry = "select username, profiletype from users";//Only want to put username and prof type in the table

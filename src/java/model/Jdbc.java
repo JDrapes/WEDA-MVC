@@ -140,6 +140,20 @@ public class Jdbc {
         return bool;
     }
 
+    public boolean claimExists(String claimid) {
+        boolean bool = false;
+        try {
+            select("select username from claims where claimid='" + claimid + "'");
+            if (rs.next()) {
+                System.out.println("TRUE");
+                bool = true;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return bool;
+    }
+
     //This inserts the record to the database when registering on the register page
     public void insert(String[] str) {
         PreparedStatement ps = null;
@@ -147,7 +161,7 @@ public class Jdbc {
             //Get todays date for the date of registration
             java.util.Date utilDate = new java.util.Date();
             java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-            
+
             ps = connection.prepareStatement("INSERT INTO Users VALUES (?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1, str[0].trim()); //Username (email)
             ps.setString(2, str[1]); //Password
@@ -194,8 +208,9 @@ public class Jdbc {
         }
         return result;
     }
+
     //Database query on the claim table.
-    public String returnClaimCell(String claimid, String column) throws SQLException{
+    public String returnClaimCell(String claimid, String column) throws SQLException {
         String result = "";
         select("select * from claims where claimid='" + claimid + "'");
         while (rs.next()) {
@@ -203,22 +218,76 @@ public class Jdbc {
         }
         return result;
     }
+
     //Function to deny a claim
-    public void denyClaim(){
-        
-        
+    public boolean denyClaim(String claimid) throws SQLException {
+        //Need to check if claimid is a legit entry in database, if so execute below.
+
+        if (claimExists(claimid)) {
+            String claimStatus = returnClaimCell(claimid, "claimstatus"); //Get status of the claim
+            if (claimStatus.toLowerCase().equals("new") || claimStatus.toLowerCase().equals("in progress")) { //if it's new or in progress we can deny it
+                PreparedStatement ps = null;
+                try {
+                    ps = connection.prepareStatement("Update Claims Set claimstatus=? where claimid=?", PreparedStatement.RETURN_GENERATED_KEYS);
+                    ps.setString(1, "Denied and closed"); //claim status
+                    ps.setString(2, claimid); //claimid
+                    ps.executeUpdate();
+                    ps.close();
+                    System.out.println("1 rows updated.");
+                    return true;
+                } catch (SQLException ex) {
+                    Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return false;
     }
-    
+
     //Function to approve a claim
-    public void approveClaim(){
-        
+    public boolean approveClaim(String claimid, String username) throws SQLException {
+        //Need to check if claim ID is legit in database before proceeding
+        if (claimExists(claimid)) {
+            String claimStatus = returnClaimCell(claimid, "claimstatus"); //Get status of the claim
+            if (claimStatus.toLowerCase().equals("new") || claimStatus.toLowerCase().equals("in progress")) { //if it's new or in progress we can deny it
+                //Get current balance and how much the claim is worth
+                double currentBalance = Double.parseDouble(returnDatabaseField(username, "balance"));
+                double claimMoney = Double.parseDouble(returnClaimCell(claimid, "claimamount"));
+                //add the values together and this is their new balance
+                double newBalance = currentBalance + claimMoney;
+                PreparedStatement ps = null;
+                try {
+                    ps = connection.prepareStatement("Update Users Set balance=? where username=?", PreparedStatement.RETURN_GENERATED_KEYS);
+                    ps.setDouble(1, newBalance); //balance
+                    ps.setString(2, username); //username
+                    ps.executeUpdate();
+
+                    ps.close();
+                    System.out.println("1 rows updated.");
+                } catch (SQLException ex) {
+                    Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                //Need to update the status to say approved
+                ps = null;
+                try {
+                    ps = connection.prepareStatement("Update Claims Set claimstatus=? where claimid=?", PreparedStatement.RETURN_GENERATED_KEYS);
+                    ps.setString(1, "Approved and closed"); //claim status
+                    ps.setString(2, claimid); //claimid
+                    ps.executeUpdate();
+
+                    ps.close();
+                    System.out.println("1 rows updated.");
+                    return true;
+                } catch (SQLException ex) {
+                    Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return false;
     }
-    
-    
-    
-        //This updates the password in the database based on the username
-    public void updatePersonalDetails(String[] str, String DOB) {         
-        Date date=Date.valueOf(DOB);                        
+
+    //This updates the password in the database based on the username
+    public void updatePersonalDetails(String[] str, String DOB) {
+        Date date = Date.valueOf(DOB);
         PreparedStatement ps = null;
         try {
             ps = connection.prepareStatement("Update Users set username=? , fullname=? , dateofbirth=? , address=? where username=?", PreparedStatement.RETURN_GENERATED_KEYS);

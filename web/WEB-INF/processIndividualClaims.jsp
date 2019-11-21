@@ -12,6 +12,7 @@
 
     </head>
     <body>
+
         <jsp:include page="/WEB-INF/navigationBar.jsp"/> 
 
         <table float="left" height="100%" cellpadding="0">
@@ -41,6 +42,8 @@
                             <input name="tbl" type="submit" id="signup" class="form-submit" value="Payout claim"/>
                             <input name="tbl" type="submit" id="signup" class="form-submit" value="Deny claim"/>  
                         </form>
+
+                                <p><%=(String) (request.getAttribute("message"))%></p>
 
 
                 </td>
