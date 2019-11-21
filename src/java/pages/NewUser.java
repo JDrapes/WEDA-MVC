@@ -61,8 +61,8 @@ public class NewUser extends HttpServlet {
         } else {
             jdbc.insert(query);
   
-            request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
-            //request.setAttribute("message", query[0] + " is added - please now sign in");
+            request.setAttribute("provpassword", query[0] + " is added - please now sign in with temporary password: " + query[1]);
+            request.getRequestDispatcher("/WEB-INF/newuserlogin.jsp").forward(request, response);
             //Need to tell the user their password. 
         }
 
