@@ -207,7 +207,13 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("query", msg);
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
-
+        }
+            
+        else if (request.getParameter("tbl").equals("Annual turnover")) {
+            request.getRequestDispatcher("/WEB-INF/turnover.jsp").forward(request, response);
+                
+            
+            
         } else if (request.getParameter("tbl").equals("Upgrade provisional member")) {
             qry = "select username, profiletype from users";//Only want to put username and prof type in the table
             String upgradeUser = (String) request.getParameter("userToUpgrade");
