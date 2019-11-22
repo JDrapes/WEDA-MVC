@@ -34,6 +34,7 @@
             <section class="sign-in">
                 <div class="container">
                     <div class="signin-content">
+                        <%=(String) (request.getAttribute("provpassword"))%>
                         <div class="signin-image">
                             <figure><img src="img/signin-image.jpg" alt="login image"></figure>
                             <form method="POST" action="AdminService.do">

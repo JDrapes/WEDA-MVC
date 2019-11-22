@@ -83,9 +83,11 @@ public class AdminServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/passwdChange.jsp").forward(request, response);
         } //SIGN IN FUNCTION
         else if (request.getParameter("tbl").equals("Sign in")) {
+            request.setAttribute("provpassword",""); //prov password should be invisible unless they are redirected from register
             request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         } //LOGOUT FUNCTION
         else if (request.getParameter("tbl").equals("Logout")) {
+            request.setAttribute("provpassword",""); //prov password should be invisible unless they are redirected from register
             request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         } //DELETE A USER FUNCTION
         else if (request.getParameter("tbl").equals("del")) {

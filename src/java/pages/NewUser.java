@@ -60,6 +60,9 @@ public class NewUser extends HttpServlet {
             request.setAttribute("message", query[0] + " is already taken as username");
         } else {
             jdbc.insert(query);
+            
+            request.setAttribute("provpassword", query[0] + " is now added, please sign in with your temporary password " + query[1]);
+
   
             request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
             //request.setAttribute("message", query[0] + " is added - please now sign in");

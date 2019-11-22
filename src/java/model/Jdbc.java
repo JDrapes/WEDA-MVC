@@ -161,13 +161,15 @@ public class Jdbc {
             //Get todays date for the date of registration
             java.util.Date utilDate = new java.util.Date();
             java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+            
+            Date sqlDateBirth = Date.valueOf(str[3]);
 
             ps = connection.prepareStatement("INSERT INTO Users VALUES (?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1, str[0].trim()); //Username (email)
             ps.setString(2, str[1]); //Password
             ps.setString(3, str[2]); //Profile type
             ps.setString(4, " "); //Fullname 
-            ps.setString(5, str[3]); //Date of birth
+            ps.setDate(5, sqlDateBirth); //Date of birth
             ps.setDate(6, sqlDate); //Date of registration 
             ps.setDouble(7, 0.00); //Balance
             ps.setString(8, " "); //Address
