@@ -83,11 +83,11 @@ public class AdminServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/passwdChange.jsp").forward(request, response);
         } //SIGN IN FUNCTION
         else if (request.getParameter("tbl").equals("Sign in")) {
-            request.setAttribute("provpassword",""); //prov password should be invisible unless they are redirected from register
+            request.setAttribute("provpassword", ""); //prov password should be invisible unless they are redirected from register
             request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         } //LOGOUT FUNCTION
         else if (request.getParameter("tbl").equals("Logout")) {
-            request.setAttribute("provpassword",""); //prov password should be invisible unless they are redirected from register
+            request.setAttribute("provpassword", ""); //prov password should be invisible unless they are redirected from register
             request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
         } //DELETE A USER FUNCTION
         else if (request.getParameter("tbl").equals("del")) {
@@ -294,6 +294,12 @@ public class AdminServlet extends HttpServlet {
                 request.getRequestDispatcher("/WEB-INF/customerPanel.jsp").forward(request, response);
 
             }
+
+        } else if (request.getParameter("tbl").equals("Annual turnover")) {
+            request.setAttribute("username", username);
+            request.getRequestDispatcher("/WEB-INF/turnover.jsp").forward(request, response);
+
+            
 
         } //CUSTOMER FUNCTIONALITY
         //Check outstanding balance
