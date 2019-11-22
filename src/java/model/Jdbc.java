@@ -194,6 +194,14 @@ public class Jdbc {
         }
         return result;
     }
+    public String returnClaimsField(String username, String column) throws SQLException {
+        String result = "";
+        select("select * from claims where username='" + username + "'");
+        while (rs.next()) {
+            result = rs.getString(column);
+        }
+        return result;
+    }
     
         //This updates the password in the database based on the username
     public void updatePersonalDetails(String[] str, String DOB) {         
@@ -350,6 +358,8 @@ public class Jdbc {
         }
         return password;
     }
+    
+
 
     public static void main(String[] args) throws SQLException {
 

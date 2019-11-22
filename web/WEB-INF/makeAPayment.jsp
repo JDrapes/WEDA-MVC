@@ -18,7 +18,7 @@
                         <h1>Make a Payment</h1>
                         <p>Please make sure to pay your outstanding balances on time otherwise your account may be deactivated!</p>
 
-                        Outstanding Balance <input type="text" name="outstandingbalance" value="<%=(String) (request.getAttribute("outstandingbalance"))%>">
+                        Outstanding Balance <input type="text" name="outstandingbalance" value="<%=(String) (request.getAttribute("outstandingbalance"))%>"readonly>
                         Credit Card Number <input type="text" name="creditcardnumber" value="">
                         Expiry Date <input type="text" name="expirydate" value="">
                         Billing Address <input type="text" name="address" value="<%=(String) (request.getAttribute("address"))%>">
