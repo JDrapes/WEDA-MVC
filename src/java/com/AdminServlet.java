@@ -60,6 +60,8 @@ public class AdminServlet extends HttpServlet {
         session.setAttribute("dateofregistration", dateofregistration);
         String balance = dbBean.returnDatabaseField(username, "balance");
         session.setAttribute("balance", balance);
+        String outstandingBalance = dbBean.returnDatabaseField(username, "outstandingbalance");
+        session.setAttribute("outstandingbalance", outstandingBalance);
         String address = dbBean.returnDatabaseField(username, "address");
         session.setAttribute("address", address);
 
@@ -305,12 +307,30 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/listPersonalClaimsAndPayments.jsp").forward(request, response);
 
-        } //Make a payment
+        } 
+        //Make a payment  *****Max*****
         else if (request.getParameter("tbl").equals("Make a payment")) {
             request.setAttribute("username", username);
-            request.getRequestDispatcher("/WEB-INF/makeAPayment.jsp").forward(request, response);
+            request.setAttribute("balance", balance);
+            request.setAttribute("outstandingbalance", outstandingBalance);
+            request.getRequestDispatcher("/WEB-INF/makeAPayment.jsp").forward(request,response);
+        } 
+         else if (request.getParameter("tbl").equals("Pay now")) {
+            request.setAttribute("username", username);
+            request.setAttribute("balance", balance);
+            request.setAttribute("outstandingbalance", outstandingBalance);
+            String amountToPay = (String) request.getParameter("amountToPay");
+            dbBean.payOutstandingBalance(username, amountToPay);
+            request.getRequestDispatcher("/WEB-INF/makeAPayment.jsp").forward(request,response);
+        }
 
-        } //Submit a claim
+
+    
+            
+            
+            
+         
+         //Submit a claim
         else if (request.getParameter("tbl").equals("Submit a claim")) {
             request.setAttribute("username", username);
 
@@ -318,6 +338,8 @@ public class AdminServlet extends HttpServlet {
         else {
             request.getRequestDispatcher("/WEB-INF/conErr.jsp").forward(request, response);
         }
+    
+    
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

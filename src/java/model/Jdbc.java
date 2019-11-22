@@ -210,6 +210,17 @@ public class Jdbc {
         }
         return result;
     }
+    
+    
+    public String returnClaimsField(String username, String column) throws SQLException {
+        String result = "";
+        select("select * from claims where username='" + username + "'");
+        while (rs.next()) {
+            result = rs.getString(column);
+        }
+        return result;
+    }
+
 
     //Database query on the claim table.
     public String returnClaimCell(String claimid, String column) throws SQLException {
@@ -443,6 +454,27 @@ public class Jdbc {
         return password;
     }
 
+    public double payOutstandingBalance(String username, String amountToPay) throws SQLException{
+        double currentBalance = Double.parseDouble(returnDatabaseField(username, "outstandingBalance"));
+        currentBalance = currentBalance - Double.parseDouble(amountToPay);
+        PreparedStatement ps = null;
+                try {
+                    ps = connection.prepareStatement("Update Users Set outstandingBalance=? where username=?", PreparedStatement.RETURN_GENERATED_KEYS);
+                    ps.setDouble(1, currentBalance); //balance
+                    ps.setString(2, username); //username
+                    ps.executeUpdate();
+
+                    ps.close();
+                    System.out.println("1 rows updated.");
+                } catch (SQLException ex) {
+                    Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+                }
+        
+        return currentBalance;
+    }
+
+    
+    
     public static void main(String[] args) throws SQLException {
 
     }
