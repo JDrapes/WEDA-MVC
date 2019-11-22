@@ -210,6 +210,7 @@ public class AdminServlet extends HttpServlet {
         }
             
         else if (request.getParameter("tbl").equals("Annual turnover")) {
+            request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/turnover.jsp").forward(request, response);
                 
             
