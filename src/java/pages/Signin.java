@@ -139,8 +139,8 @@ public class Signin extends HttpServlet {
 
                     break;
                 default: //Invalid - something is broken, check database for if user has an assigned profile
+                    request.setAttribute("provpassword", "Invalid login"); //Setting invalid credentials message
                     request.getRequestDispatcher("/WEB-INF/login.jsp").forward(request, response);
-                    request.setAttribute("msg", "Invalid login");
                     break;
             }
         }
