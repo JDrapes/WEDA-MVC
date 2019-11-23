@@ -18,9 +18,9 @@
                     <h2>Submit a claim</h2>
                     <p>Please enter your claim amount and a description of why you are claiming</p>
                     <form method="POST" action="AdminService.do">
-                        Claim amount: <input type="text" name="username" value="<%=(String) (request.getAttribute("claimamount"))%>">
-                        Claim description: <input type="text" name="fullname" value="<%=(String) (request.getAttribute("claimdescription"))%>">
-                        <input name="tbl" type="submit" id="submitaclaim" class="form-submit" value="Submit a claim"/>
+                        Claim amount: <input type="text" name="claimamount" value="<%=(String) (request.getAttribute("claimamount"))%>">
+                        Claim description: <input type="text" name="claimdescription" value="<%=(String) (request.getAttribute("claimdescription"))%>">
+                        <input name="tbl" type="submit" id="submitaclaim" class="form-submit" value="Submit my claim"/>
                     </form>
                 </div>
 

@@ -62,6 +62,9 @@ public class AdminServlet extends HttpServlet {
         session.setAttribute("balance", balance);
         String address = dbBean.returnDatabaseField(username, "address");
         session.setAttribute("address", address);
+        //Added outstanding balance for making a payment - MC 
+        String outstandingBalance = dbBean.returnDatabaseField(username, "outstandingbalance");
+        session.setAttribute("outstandingbalance", outstandingBalance);
 
         //ADMIN FUNCTION
         if (request.getParameter("tbl").equals("List Users")) {
@@ -164,8 +167,10 @@ public class AdminServlet extends HttpServlet {
 
         } else if (request.getParameter("tbl").equals("Payout claim")) {
             request.setAttribute("username", username);
+            //Username mus equal the username of the user whos claim we approving 
             String claimnumber = (String) request.getParameter("claimnumber");
-            if (dbBean.approveClaim(claimnumber, username)) {
+            String claimusername = (String) request.getParameter("claimusername");
+            if (dbBean.approveClaim(claimnumber, claimusername)) {
                 request.setAttribute("message", "Claim PAID - Enter a new claim number");
             } else {
                 request.setAttribute("message", "There was an error with this request");
@@ -319,15 +324,34 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/listPersonalClaimsAndPayments.jsp").forward(request, response);
 
-        } //Make a payment
+        } //Make a payment  *****Max*****
         else if (request.getParameter("tbl").equals("Make a payment")) {
             request.setAttribute("username", username);
+            request.setAttribute("balance", balance);
+            request.setAttribute("outstandingbalance", outstandingBalance);
             request.getRequestDispatcher("/WEB-INF/makeAPayment.jsp").forward(request, response);
-
-        } //Submit a claim
-        else if (request.getParameter("tbl").equals("Submit a claim")) {
+        } else if (request.getParameter("tbl").equals("Pay now")) {
             request.setAttribute("username", username);
+            request.setAttribute("balance", balance);
+            request.setAttribute("outstandingbalance", outstandingBalance);
 
+            request.getRequestDispatcher("/WEB-INF/makeAPayment.jsp").forward(request, response);
+        } //Submit a claim - this is the link on the side panel
+        else if (request.getParameter("tbl").equals("Submit a claim")) {
+            request.setAttribute("claimamount", "");
+            request.setAttribute("claimdescription", "");
+            request.setAttribute("username", username);
+            request.getRequestDispatcher("WEB-INF/submitAClaim.jsp").forward(request, response);
+        } else if (request.getParameter("tbl").equals("Submit my claim")) {
+            request.setAttribute("username", username);
+            String[] query = new String[3];
+            query[0] = (String) request.getAttribute("username");
+            query[1] = (String) request.getParameter("claimamount");
+            query[2] = (String) request.getParameter("claimdescription");
+            dbBean.submitClaimToDB(query);
+            //Reset the form
+            request.setAttribute("claimamount", "");
+            request.setAttribute("claimdescription", "");
             request.getRequestDispatcher("WEB-INF/submitAClaim.jsp").forward(request, response);
 
         } //DEFAULT - CONN ERROR CALL IF THERE'S AN ERROR OR INVALID REDIRECT

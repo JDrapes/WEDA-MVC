@@ -220,6 +220,43 @@ public class Jdbc {
         }
         return result;
     }
+    
+    //have to check how many entries are in the claims DB and then +1 to this and return the number
+    public String nextClaimID() throws SQLException{
+        String result = "";
+        int rowCount = 0;
+        select("select COUNT (*) from claims");
+        while (rs.next()) {
+            rowCount=rs.getInt(1);
+        }
+        rowCount = rowCount+1; //Add 1 for return the next row
+        return Integer.toString(rowCount); //Turn the int to a string as a return - DB uses VARCHAR
+   
+    }
+    
+    public void submitClaimToDB(String[] str) {
+        PreparedStatement ps = null;
+        try {
+            //Get todays date for the date of registration
+            java.util.Date utilDate = new java.util.Date();
+            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+            
+            ps = connection.prepareStatement("INSERT INTO Claims VALUES (?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setString(1, nextClaimID()); //Claim ID - It's type VARCHAR so need to do int to string when pushing it
+            ps.setString(2, str[0]); //Username
+            ps.setString(3, str[2]); //Claim description
+            ps.setDate(4, sqlDate); //Claim Date - todays date
+            ps.setDouble(5, Double.parseDouble(str[1])); //Claim Amount
+            ps.setString(6, "New"); //Claim Status - all claims start as new status
+            ps.executeUpdate();
+
+            ps.close();
+            System.out.println("1 row added.");
+        } catch (SQLException ex) {
+            Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 
     //Function to deny a claim
     public boolean denyClaim(String claimid) throws SQLException {
