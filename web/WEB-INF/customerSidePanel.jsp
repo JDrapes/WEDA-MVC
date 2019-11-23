@@ -30,7 +30,9 @@
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Check outstanding balance"/>
                         <input name="tbl" type="submit" class="btn btn-secondary" value="List all payments and claims to date"/>
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Make a payment"/>
-                        <input name="tbl" type="submit" class="btn btn-secondary" value="Submit a claim"/>                    
+                        <input name="tbl" type="submit" class="btn btn-secondary" value="Submit a claim"/>
+                        <!-- Change your password  --> 
+                        <input name="tbl" type="submit" class="btn btn-secondary" value="Change my password"/>
                     </form>
 
 
