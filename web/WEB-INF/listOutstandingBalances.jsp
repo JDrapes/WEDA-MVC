@@ -20,8 +20,8 @@
                     <jsp:include page="/WEB-INF/adminSidePanel.jsp"/> 
                 </div>
                 <div id="content">
-                    <h2>Content</h2>
-                    <p>This column is fixed.</p>
+                    <h2>Below is a list of users with an outstanding balance</h2>
+                    <%=(String) (request.getAttribute("query"))%>
                 </div>
                 <div class="clearer"></div>
             </div>

@@ -121,6 +121,14 @@ public class AdminServlet extends HttpServlet {
         } //List all outstanding balances to the admin 
         else if (request.getParameter("tbl").equals("List all outstanding balances")) {
             request.setAttribute("username",username);
+            qry = "select username, outstandingbalance from users where outstandingbalance!=0";//Only want to put username and prof type in the table
+            String msg = "No users";
+            try {
+                msg = dbBean.retrieve(qry);
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            request.setAttribute("query", msg);
             request.getRequestDispatcher("/WEB-INF/listOutstandingBalances.jsp").forward(request, response);
             
         } //List all claims as an admin.
