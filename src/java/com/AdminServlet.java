@@ -299,8 +299,6 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/turnover.jsp").forward(request, response);
 
-            
-
         } //CUSTOMER FUNCTIONALITY
         //Check outstanding balance
         else if (request.getParameter("tbl").equals("Check outstanding balance")) {
@@ -308,6 +306,16 @@ public class AdminServlet extends HttpServlet {
 
         } //List all payments and claims to date
         else if (request.getParameter("tbl").equals("List all payments and claims to date")) {
+            //Set the query as selecting all from claims table
+            qry = "select * from claims where username='" + username + "'";
+            String msg = "No users";
+            try {
+                msg = dbBean.retrieve(qry);
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            //Retrieve it on the page
+            request.setAttribute("query", msg);
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/listPersonalClaimsAndPayments.jsp").forward(request, response);
 
@@ -319,6 +327,8 @@ public class AdminServlet extends HttpServlet {
         } //Submit a claim
         else if (request.getParameter("tbl").equals("Submit a claim")) {
             request.setAttribute("username", username);
+
+            request.getRequestDispatcher("WEB-INF/submitAClaim.jsp").forward(request, response);
 
         } //DEFAULT - CONN ERROR CALL IF THERE'S AN ERROR OR INVALID REDIRECT
         else {
