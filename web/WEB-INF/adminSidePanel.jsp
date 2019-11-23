@@ -37,7 +37,7 @@
                         <!-- List all users --> 
                         <input name="tbl" type="submit" class="btn btn-secondary" value="List Users"/>
                         <!-- List all outstanding balances --> 
-                        <input name="tbl" type="submit" class="btn btn-secondary" value="List all oustanding balances"/>
+                        <input name="tbl" type="submit" class="btn btn-secondary" value="List all outstanding balances"/>
                         <!-- List all claims --> 
                         <input name="tbl" type="submit" class="btn btn-secondary" value="List all claims"/>
                         <!-- List all professional membership applications with option to upgrade them, also suspend/resume memberships -->

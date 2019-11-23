@@ -118,6 +118,11 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("balance", balance);
             request.setAttribute("address", address);
             request.getRequestDispatcher("/WEB-INF/adminPanel.jsp").forward(request, response);
+        } //List all outstanding balances to the admin 
+        else if (request.getParameter("tbl").equals("List all outstanding balances")) {
+            request.setAttribute("username",username);
+            request.getRequestDispatcher("/WEB-INF/listOutstandingBalances.jsp").forward(request, response);
+            
         } //List all claims as an admin.
         else if (request.getParameter("tbl").equals("List all claims")) {
             //Set the query as selecting all from claims table

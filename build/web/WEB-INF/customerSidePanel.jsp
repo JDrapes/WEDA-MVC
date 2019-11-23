@@ -27,7 +27,6 @@
                     <!-- buttons below -->
                     <form method="POST" action="AdminService.do">
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Customer profile page"/>
-                        <input name="tbl" type="submit" class="btn btn-secondary" value="Check outstanding balance"/>
                         <input name="tbl" type="submit" class="btn btn-secondary" value="List all payments and claims to date"/>
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Make a payment"/>
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Submit a claim"/>
