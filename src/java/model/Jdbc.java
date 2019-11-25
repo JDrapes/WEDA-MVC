@@ -161,7 +161,7 @@ public class Jdbc {
             //Get todays date for the date of registration
             java.util.Date utilDate = new java.util.Date();
             java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-            
+
             Date sqlDateBirth = Date.valueOf(str[3]);
 
             ps = connection.prepareStatement("INSERT INTO Users VALUES (?,?,?,?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
@@ -220,27 +220,120 @@ public class Jdbc {
         }
         return result;
     }
-    
+
+    public boolean validateStringToDouble(String check) {
+        try {
+            double d = Double.valueOf(check);
+            return true;
+        } catch (NumberFormatException nfe) {
+            System.out.println("NumberFormatException: " + nfe.getMessage());
+        }
+        return false;
+    }
+
+    public boolean makePaymentFromCard(String username, String amountToPay) throws SQLException {
+        if (!validateStringToDouble(amountToPay)) {
+            //invalid string to double returns false
+            return false;
+        }
+        //Convert the string amount into a double to work with the database
+        Double AmountPaying = Double.parseDouble(amountToPay);
+        Double outstandingBalance = Double.parseDouble(returnDatabaseField(username, "outstandingbalance"));
+
+        if ((AmountPaying <= outstandingBalance)) {
+            //new outstanding balance after paying off the amount
+            outstandingBalance = outstandingBalance - AmountPaying;
+            //Update to database
+            PreparedStatement ps = null;
+            try {
+                ps = connection.prepareStatement("Update Users Set outstandingbalance=? where username=?", PreparedStatement.RETURN_GENERATED_KEYS);
+                ps.setDouble(1, outstandingBalance);
+                ps.setString(2, username);
+                ps.executeUpdate();
+                ps.close();
+                System.out.println("1 rows updated.");
+                return true;
+            } catch (SQLException ex) {
+                Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        }
+
+        return false;
+    }
+
+    //Bool function for user making a payment from existing balance
+    public boolean makePaymentFromBalance(String username, String amountToPay) throws SQLException {
+        if (!validateStringToDouble(amountToPay)) {
+            //invalid string to double returns false
+            return false;
+        }
+        //Convert the string amount into a double to work with the database
+        Double AmountPaying = Double.parseDouble(amountToPay);
+        //Return the users current balance to make sure they can afford to pay
+        Double currentBalance = Double.parseDouble(returnDatabaseField(username, "balance"));
+        Double outstandingBalance = Double.parseDouble(returnDatabaseField(username, "outstandingbalance"));
+        //Making sure they have enough balance and they are not trying to overpay the amount they owe
+        if ((currentBalance >= AmountPaying) && (AmountPaying <= outstandingBalance)) {
+            //Update the outstanding balance 
+            outstandingBalance = outstandingBalance - AmountPaying;
+            currentBalance = currentBalance - AmountPaying;
+            PreparedStatement ps = null;
+            try {
+                ps = connection.prepareStatement("Update Users Set outstandingbalance=? where username=?", PreparedStatement.RETURN_GENERATED_KEYS);
+                ps.setDouble(1, outstandingBalance);
+                ps.setString(2, username);
+                ps.executeUpdate();
+                ps.close();
+                System.out.println("1 rows updated.");
+            } catch (SQLException ex) {
+                Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            //Update the current balance
+            ps = null;
+            try {
+                ps = connection.prepareStatement("Update Users Set balance=? where username=?", PreparedStatement.RETURN_GENERATED_KEYS);
+                ps.setDouble(1, currentBalance);
+                ps.setString(2, username);
+                ps.executeUpdate();
+                ps.close();
+                System.out.println("1 rows updated.");
+                return true;
+            } catch (SQLException ex) {
+                Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        } else {
+            //User cannot afford the payment they tried to make.
+            return false;
+        }
+        return false;
+    }
+
     //have to check how many entries are in the claims DB and then +1 to this and return the number
-    public String nextClaimID() throws SQLException{
+    public String nextClaimID() throws SQLException {
         String result = "";
         int rowCount = 0;
         select("select COUNT (*) from claims");
         while (rs.next()) {
-            rowCount=rs.getInt(1);
+            rowCount = rs.getInt(1);
         }
-        rowCount = rowCount+1; //Add 1 for return the next row
+        rowCount = rowCount + 1; //Add 1 for return the next row
         return Integer.toString(rowCount); //Turn the int to a string as a return - DB uses VARCHAR
-   
+
     }
-    
-    public void submitClaimToDB(String[] str) {
+
+    public boolean submitClaimToDB(String[] str) {
+        if (!validateStringToDouble(str[1])) {
+            //invalid string to double returns false
+            return false;
+        }
         PreparedStatement ps = null;
         try {
             //Get todays date for the date of registration
             java.util.Date utilDate = new java.util.Date();
             java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-            
+
             ps = connection.prepareStatement("INSERT INTO Claims VALUES (?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1, nextClaimID()); //Claim ID - It's type VARCHAR so need to do int to string when pushing it
             ps.setString(2, str[0]); //Username
@@ -252,10 +345,11 @@ public class Jdbc {
 
             ps.close();
             System.out.println("1 row added.");
+            return true;
         } catch (SQLException ex) {
             Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        return false;
     }
 
     //Function to deny a claim

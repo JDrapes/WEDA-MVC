@@ -22,9 +22,8 @@
                         Claim description: <input type="text" name="claimdescription" value="<%=(String) (request.getAttribute("claimdescription"))%>">
                         <input name="tbl" type="submit" id="submitaclaim" class="form-submit" value="Submit my claim"/>
                     </form>
+                        <%=(String) (request.getAttribute("responseMessage"))%>
                 </div>
-
-
 
                 <div class="clearer"></div>
             </div>

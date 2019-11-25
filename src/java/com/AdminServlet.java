@@ -63,8 +63,8 @@ public class AdminServlet extends HttpServlet {
         String address = dbBean.returnDatabaseField(username, "address");
         session.setAttribute("address", address);
         //Added outstanding balance for making a payment - MC 
-        String outstandingBalance = dbBean.returnDatabaseField(username, "outstandingbalance");
-        session.setAttribute("outstandingbalance", outstandingBalance);
+        String outstandingbalance = dbBean.returnDatabaseField(username, "outstandingbalance");
+        session.setAttribute("outstandingbalance", outstandingbalance);
 
         //ADMIN FUNCTION
         if (request.getParameter("tbl").equals("List Users")) {
@@ -120,7 +120,7 @@ public class AdminServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/adminPanel.jsp").forward(request, response);
         } //List all outstanding balances to the admin 
         else if (request.getParameter("tbl").equals("List all outstanding balances")) {
-            request.setAttribute("username",username);
+            request.setAttribute("username", username);
             qry = "select username, outstandingbalance from users where outstandingbalance!=0";//Only want to put username and prof type in the table
             String msg = "No users";
             try {
@@ -130,7 +130,7 @@ public class AdminServlet extends HttpServlet {
             }
             request.setAttribute("query", msg);
             request.getRequestDispatcher("/WEB-INF/listOutstandingBalances.jsp").forward(request, response);
-            
+
         } //List all claims as an admin.
         else if (request.getParameter("tbl").equals("List all claims")) {
             //Set the query as selecting all from claims table
@@ -337,22 +337,53 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/listPersonalClaimsAndPayments.jsp").forward(request, response);
 
-        } //Make a payment  *****Max*****
+        } //Make a payment  *****Max*****   
         else if (request.getParameter("tbl").equals("Make a payment")) {
             request.setAttribute("username", username);
-            request.setAttribute("balance", balance);
-            request.setAttribute("outstandingbalance", outstandingBalance);
+            request.setAttribute("outstandingbalance", outstandingbalance);
+            request.setAttribute("address", address);
+            request.setAttribute("responseMessage", ""); //set as empty on load
             request.getRequestDispatcher("/WEB-INF/makeAPayment.jsp").forward(request, response);
-        } else if (request.getParameter("tbl").equals("Pay now")) {
+        } //Pay with card - does not take from users current balance
+        else if (request.getParameter("tbl").equals("Pay with card")) {
             request.setAttribute("username", username);
-            request.setAttribute("balance", balance);
-            request.setAttribute("outstandingbalance", outstandingBalance);
+            request.setAttribute("address", address);
+            String amountToPay = (String) request.getParameter("amountToPay"); //get amount as string - function maniuplate it as double
+            if(dbBean.makePaymentFromCard(username, amountToPay)){
+                request.setAttribute("responseMessage", "Succesful payment, thank you!"); //
+            } else {
+                request.setAttribute("responseMessage", "Payment failed, please check card details"); //
+
+            }
+            outstandingbalance = dbBean.returnDatabaseField(username, "outstandingbalance");
+            request.setAttribute("outstandingbalance", outstandingbalance);
+            request.getRequestDispatcher("/WEB-INF/makeAPayment.jsp").forward(request, response);
+        } //Need to take from existing balance as long as they can afford it
+        else if (request.getParameter("tbl").equals("Pay with existing balance")) {
+            request.setAttribute("username", username);
+            request.setAttribute("outstandingbalance", outstandingbalance);
+            String amountToPay = (String) request.getParameter("amountToPay"); //get amount as string - function maniuplate it as double
+            if (dbBean.makePaymentFromBalance(username, amountToPay)) {
+                //success message
+                outstandingbalance = dbBean.returnDatabaseField(username, "outstandingbalance");
+                request.setAttribute("outstandingbalance", outstandingbalance);
+                request.setAttribute("address", address);
+                request.setAttribute("responseMessage", "Succesful payment, thank you!"); //
+                request.getRequestDispatcher("/WEB-INF/makeAPayment.jsp").forward(request, response);
+
+            } else {
+                //Fail message
+                request.setAttribute("address", address);
+                request.setAttribute("responseMessage", "There was a problem processing your payment, ensure you have funds and are not trying to pay more than the outstanding balance"); //
+                request.getRequestDispatcher("/WEB-INF/makeAPayment.jsp").forward(request, response);
+            }
 
             request.getRequestDispatcher("/WEB-INF/makeAPayment.jsp").forward(request, response);
         } //Submit a claim - this is the link on the side panel
         else if (request.getParameter("tbl").equals("Submit a claim")) {
             request.setAttribute("claimamount", "");
             request.setAttribute("claimdescription", "");
+            request.setAttribute("responseMessage","");
             request.setAttribute("username", username);
             request.getRequestDispatcher("WEB-INF/submitAClaim.jsp").forward(request, response);
         } else if (request.getParameter("tbl").equals("Submit my claim")) {
@@ -361,12 +392,20 @@ public class AdminServlet extends HttpServlet {
             query[0] = (String) request.getAttribute("username");
             query[1] = (String) request.getParameter("claimamount");
             query[2] = (String) request.getParameter("claimdescription");
-            dbBean.submitClaimToDB(query);
+            
+            if(dbBean.submitClaimToDB(query)){
             //Reset the form
             request.setAttribute("claimamount", "");
             request.setAttribute("claimdescription", "");
+            request.setAttribute("responseMessage","Claim submitted succesfully");
             request.getRequestDispatcher("WEB-INF/submitAClaim.jsp").forward(request, response);
-
+            } else {
+            request.setAttribute("claimamount", "");
+            request.setAttribute("claimdescription", "");
+            request.setAttribute("responseMessage", "This claim submission was not succesful");
+            request.getRequestDispatcher("WEB-INF/submitAClaim.jsp").forward(request, response);  
+            }
+            
         } //DEFAULT - CONN ERROR CALL IF THERE'S AN ERROR OR INVALID REDIRECT
         else {
             request.getRequestDispatcher("/WEB-INF/conErr.jsp").forward(request, response);

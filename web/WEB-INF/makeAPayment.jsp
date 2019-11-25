@@ -25,8 +25,12 @@
 
                     <form action="AdminService.do" method="POST">
                         <input type="text" name="amountToPay" id="amountToPay" placeholder="You are paying: "/>
-                        <input name="tbl" type="submit" id="signup" class="form-submit" value="Pay now"/>
+                        <input name="tbl" type="submit" id="signup" class="form-submit" value="Pay with card"/>
+                        <input name="tbl" type="submit" id="signup" class="form-submit" value="Pay with existing balance"/>
                     </form>
+                    
+                    <%=(String) (request.getAttribute("responseMessage"))%>
+
 
 
                 </div>
