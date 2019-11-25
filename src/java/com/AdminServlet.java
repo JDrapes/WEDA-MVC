@@ -332,8 +332,16 @@ public class AdminServlet extends HttpServlet {
             } catch (SQLException ex) {
                 Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            //Retrieve it on the page
             request.setAttribute("query", msg);
+            qry = "select paymentdate, paymenttype, paymentamount, cashdirection from payments where username='" + username + "'";
+            String payments = "No users";
+            try {
+                payments = dbBean.retrieve(qry);
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            request.setAttribute("paymentquery",payments);
+            
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/listPersonalClaimsAndPayments.jsp").forward(request, response);
 
@@ -351,6 +359,8 @@ public class AdminServlet extends HttpServlet {
             String amountToPay = (String) request.getParameter("amountToPay"); //get amount as string - function maniuplate it as double
             if(dbBean.makePaymentFromCard(username, amountToPay)){
                 request.setAttribute("responseMessage", "Succesful payment, thank you!"); //
+                //PARAMETERS to add to payments table username, paymenttype, cashdirection, paymentamount
+                dbBean.insertPaymentToDB(username, "Paying outstanding balance", "Payment to WEDA", amountToPay);
             } else {
                 request.setAttribute("responseMessage", "Payment failed, please check card details"); //
 
@@ -369,6 +379,8 @@ public class AdminServlet extends HttpServlet {
                 request.setAttribute("outstandingbalance", outstandingbalance);
                 request.setAttribute("address", address);
                 request.setAttribute("responseMessage", "Succesful payment, thank you!"); //
+                //PARAMETERS to add to payments table username, paymenttype, cashdirection, paymentamount
+                dbBean.insertPaymentToDB(username, "Paying outstanding balance", "Payment to WEDA", amountToPay);
                 request.getRequestDispatcher("/WEB-INF/makeAPayment.jsp").forward(request, response);
 
             } else {

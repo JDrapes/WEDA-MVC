@@ -17,6 +17,10 @@
                 <div id="content">
                     <h2>These are all your claims</h2>
                     <%=(String) (request.getAttribute("query"))%>
+                    
+                    <h2>These are your payments</h2>
+                    <%=(String) (request.getAttribute("paymentquery"))%>
+                    
                 </div>
                 <div class="clearer"></div>
             </div>

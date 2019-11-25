@@ -173,15 +173,13 @@ public class Jdbc {
             ps.setDate(6, sqlDate); //Date of registration 
             ps.setDouble(7, 0.00); //Balance
             ps.setString(8, " "); //Address
-            ps.setDouble(9, 500); //Outstanding balance set the user 500 in debt.
+            ps.setDouble(9, 10); //Outstanding balance is 10 which is the yearly membership fee.
             ps.executeUpdate();
-
             ps.close();
             System.out.println("1 row added.");
         } catch (SQLException ex) {
             Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     //This updates the password in the database based on the username
@@ -198,6 +196,48 @@ public class Jdbc {
         } catch (SQLException ex) {
             Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    //have to check how many entries are in the claims DB and then +1 to this and return the number
+
+    public String nextPaymentID() throws SQLException {
+        String result = "";
+        int rowCount = 0;
+        select("select COUNT (*) from payments");
+        while (rs.next()) {
+            rowCount = rs.getInt(1);
+        }
+        rowCount = rowCount + 1; //Add 1 for return the next row
+        return Integer.toString(rowCount); //Turn the int to a string as a return - DB uses VARCHAR
+
+    }
+
+    //This inserts the record to the database when registering on the register page
+    //PARAMETERS username, paymenttype, cashdirection, paymentamount
+    public boolean insertPaymentToDB(String username, String paymenttype, String cashdirection, String paymentamount) {
+        if (!validateStringToDouble(paymentamount)) {
+            //invalid string to double returns false
+            return false;
+        }
+        PreparedStatement ps = null;
+        try {
+            //Get todays date for the date of registration
+            java.util.Date utilDate = new java.util.Date();
+            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+            ps = connection.prepareStatement("INSERT INTO Payments VALUES (?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setString(1, nextPaymentID()); //Payment ID, generated value
+            ps.setString(2, username); //Username
+            ps.setDate(3, sqlDate); //Payment date (today)
+            ps.setString(4, paymenttype); //Payment type e.g. cash withdrawl or paying their membership fees
+            ps.setString(5, cashdirection); //Cash direction e.g. income or outgoing
+            ps.setDouble(6, Double.parseDouble(paymentamount)); //Payment amount
+            ps.executeUpdate();
+            ps.close();
+            System.out.println("1 row added.");
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
 
     //Pass the parameter of username and the table column to return the individual record.
@@ -256,7 +296,7 @@ public class Jdbc {
             } catch (SQLException ex) {
                 Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
         }
 
         return false;
