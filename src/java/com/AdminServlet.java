@@ -325,7 +325,7 @@ public class AdminServlet extends HttpServlet {
         } //List all payments and claims to date
         else if (request.getParameter("tbl").equals("List all payments and claims to date")) {
             //Set the query as selecting all from claims table
-            qry = "select * from claims where username='" + username + "'";
+            qry = "select claimid, claimdate, claimdescription, claimamount, claimstatus from claims where username='" + username + "'";
             String msg = "No users";
             try {
                 msg = dbBean.retrieve(qry);
