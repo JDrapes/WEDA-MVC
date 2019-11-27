@@ -68,6 +68,7 @@ public class AdminServlet extends HttpServlet {
 
         //ADMIN FUNCTION
         if (request.getParameter("tbl").equals("List Users")) {
+            qry = "select username, fullname, profiletype, dateofbirth, dateofregistration, address, balance, outstandingbalance  from users";//List users
             String msg = "No users";
             try {
                 msg = dbBean.retrieve(qry);
@@ -400,6 +401,7 @@ public class AdminServlet extends HttpServlet {
             request.getRequestDispatcher("WEB-INF/submitAClaim.jsp").forward(request, response);
         } else if (request.getParameter("tbl").equals("Submit my claim")) {
             request.setAttribute("username", username);
+            
             String[] query = new String[3];
             query[0] = (String) request.getAttribute("username");
             query[1] = (String) request.getParameter("claimamount");

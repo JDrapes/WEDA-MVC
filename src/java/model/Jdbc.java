@@ -199,16 +199,31 @@ public class Jdbc {
     }
     //have to check how many entries are in the claims DB and then +1 to this and return the number
 
+    public boolean moreClaimsAllowed(String username) throws SQLException {
+        String result = "";
+        int rowCount = 0;
+        select("select COUNT (*) from claims where username='" + username + "'");
+        while (rs.next()) {
+            if(rs.getString("claimstatus").equals("Approved and closed")){
+            rowCount = rs.getInt(1);
+            }
+            if (rowCount <= 2){
+                return true;
+            }
+        }
+        return false;
+    }
+    
     public String nextPaymentID() throws SQLException {
         String result = "";
         int rowCount = 0;
         select("select COUNT (*) from payments");
+        
         while (rs.next()) {
             rowCount = rs.getInt(1);
         }
         rowCount = rowCount + 1; //Add 1 for return the next row
         return Integer.toString(rowCount); //Turn the int to a string as a return - DB uses VARCHAR
-
     }
 
     //This inserts the record to the database when registering on the register page
