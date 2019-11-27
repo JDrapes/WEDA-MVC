@@ -240,6 +240,57 @@ public class Jdbc {
         return false;
     }
 
+    public boolean withdrawCash(String username, String withdrawamount) throws SQLException{
+        if (!validateStringToDouble(withdrawamount)) {
+            //invalid string to double returns false
+            return false;
+        }
+        //Need to convert the string to an double
+        Double amountWithdrawing = Double.parseDouble(withdrawamount);
+        //Get users current balance
+        Double currentBalance = Double.parseDouble(returnDatabaseField(username, "balance"));
+        Double newBalance = 0.00;
+        //Set their current balance = current balance - amount withdrawing as long as they can afford it 
+        if(currentBalance-amountWithdrawing>0){
+            newBalance = currentBalance-amountWithdrawing;
+        }       
+        //Need to put the new balance into the database and return true after the operation
+        PreparedStatement ps = null;
+            try {
+                ps = connection.prepareStatement("Update Users Set balance=? where username=?", PreparedStatement.RETURN_GENERATED_KEYS);
+                ps.setDouble(1, newBalance);
+                ps.setString(2, username);
+                ps.executeUpdate();
+                ps.close();
+                System.out.println("1 rows updated.");
+            } catch (SQLException ex) {
+                Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+            }               
+            //before returning true must add this to the payments table to track cashflow.
+             ps = null;
+        try {
+            //Get todays date for the date of registration
+            java.util.Date utilDate = new java.util.Date();
+            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+            ps = connection.prepareStatement("INSERT INTO Payments VALUES (?,?,?,?,?,?)", PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setString(1, nextPaymentID()); //Payment ID, generated value
+            ps.setString(2, username); //Username
+            ps.setDate(3, sqlDate); //Payment date (today)
+            ps.setString(4, "PayPal cash withdrawal"); //Payment type e.g. cash withdrawl or paying their membership fees
+            ps.setString(5, "Payment from WEDA"); //Cash direction e.g. income or outgoing
+            ps.setDouble(6, Double.parseDouble(withdrawamount)); //Payment amount
+            ps.executeUpdate();
+            ps.close();
+            System.out.println("1 row added.");
+            return true;
+        } catch (SQLException ex) {
+            Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+            
+        return false;
+    }
+    
     //Pass the parameter of username and the table column to return the individual record.
     //this is used on the profile page!
     public String returnDatabaseField(String username, String column) throws SQLException {

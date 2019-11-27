@@ -340,8 +340,8 @@ public class AdminServlet extends HttpServlet {
             } catch (SQLException ex) {
                 Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            request.setAttribute("paymentquery",payments);
-            
+            request.setAttribute("paymentquery", payments);
+
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/listPersonalClaimsAndPayments.jsp").forward(request, response);
 
@@ -357,7 +357,7 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("username", username);
             request.setAttribute("address", address);
             String amountToPay = (String) request.getParameter("amountToPay"); //get amount as string - function maniuplate it as double
-            if(dbBean.makePaymentFromCard(username, amountToPay)){
+            if (dbBean.makePaymentFromCard(username, amountToPay)) {
                 request.setAttribute("responseMessage", "Succesful payment, thank you!"); //
                 //PARAMETERS to add to payments table username, paymenttype, cashdirection, paymentamount
                 dbBean.insertPaymentToDB(username, "Paying outstanding balance", "Payment to WEDA", amountToPay);
@@ -395,7 +395,7 @@ public class AdminServlet extends HttpServlet {
         else if (request.getParameter("tbl").equals("Submit a claim")) {
             request.setAttribute("claimamount", "");
             request.setAttribute("claimdescription", "");
-            request.setAttribute("responseMessage","");
+            request.setAttribute("responseMessage", "");
             request.setAttribute("username", username);
             request.getRequestDispatcher("WEB-INF/submitAClaim.jsp").forward(request, response);
         } else if (request.getParameter("tbl").equals("Submit my claim")) {
@@ -404,20 +404,40 @@ public class AdminServlet extends HttpServlet {
             query[0] = (String) request.getAttribute("username");
             query[1] = (String) request.getParameter("claimamount");
             query[2] = (String) request.getParameter("claimdescription");
-            
-            if(dbBean.submitClaimToDB(query)){
-            //Reset the form
-            request.setAttribute("claimamount", "");
-            request.setAttribute("claimdescription", "");
-            request.setAttribute("responseMessage","Claim submitted succesfully");
-            request.getRequestDispatcher("WEB-INF/submitAClaim.jsp").forward(request, response);
+
+            if (dbBean.submitClaimToDB(query)) {
+                //Reset the form
+                request.setAttribute("claimamount", "");
+                request.setAttribute("claimdescription", "");
+                request.setAttribute("responseMessage", "Claim submitted succesfully");
+                request.getRequestDispatcher("WEB-INF/submitAClaim.jsp").forward(request, response);
             } else {
-            request.setAttribute("claimamount", "");
-            request.setAttribute("claimdescription", "");
-            request.setAttribute("responseMessage", "This claim submission was not succesful");
-            request.getRequestDispatcher("WEB-INF/submitAClaim.jsp").forward(request, response);  
+                request.setAttribute("claimamount", "");
+                request.setAttribute("claimdescription", "");
+                request.setAttribute("responseMessage", "This claim submission was not succesful");
+                request.getRequestDispatcher("WEB-INF/submitAClaim.jsp").forward(request, response);
             }
-            
+
+        } else if (request.getParameter("tbl").equals("Withdraw balance")) {
+            request.setAttribute("username", username);
+            request.setAttribute("balance", balance);
+            request.setAttribute("responseMessage", "");
+
+            request.getRequestDispatcher("WEB-INF/withdrawBalance.jsp").forward(request, response);
+
+        } else if (request.getParameter("tbl").equals("Withdraw my cash")) {
+            String withdrawamount = request.getParameter("withdrawamount");
+            if (dbBean.withdrawCash(username, withdrawamount)) {
+                //success
+                request.setAttribute("responseMessage", "Your money has been withdraw succesfully!");
+            } else {
+                //fail                
+                request.setAttribute("responseMessage", "There was an error processing your withdraw...");
+            }
+            //Redirects regardless
+            request.setAttribute("username", username);
+            request.setAttribute("balance",dbBean.returnDatabaseField(username,"balance"));        
+            request.getRequestDispatcher("WEB-INF/withdrawBalance.jsp").forward(request, response);
         } //DEFAULT - CONN ERROR CALL IF THERE'S AN ERROR OR INVALID REDIRECT
         else {
             request.getRequestDispatcher("/WEB-INF/conErr.jsp").forward(request, response);
