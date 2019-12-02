@@ -315,8 +315,24 @@ public class AdminServlet extends HttpServlet {
 
         } else if (request.getParameter("tbl").equals("Annual turnover")) {
             request.setAttribute("username", username);
-            request.getRequestDispatcher("/WEB-INF/turnover.jsp").forward(request, response);
 
+            //Set the query as selecting all from claims table
+            qry = "select paymentamount, username, paymentdate, paymenttype, cashdirection from payments";
+            String msg = "No payments";
+            try {
+                msg = dbBean.retrieve(qry);
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            String income = dbBean.calculateIncome();
+            String outgoing = dbBean.calculateOutgoing();
+            String netturnover = dbBean.calculateTurnover();
+            request.setAttribute("netturnover", netturnover);
+            request.setAttribute("incometransactions",income);
+            request.setAttribute("outgoingtransactions",outgoing);
+            request.setAttribute("alltransactions", msg);
+            request.getRequestDispatcher("/WEB-INF/turnover.jsp").forward(request, response);
+                    
         } //CUSTOMER FUNCTIONALITY
         //Check outstanding balance
         else if (request.getParameter("tbl").equals("Check outstanding balance")) {
@@ -436,7 +452,7 @@ public class AdminServlet extends HttpServlet {
             }
             //Redirects regardless
             request.setAttribute("username", username);
-            request.setAttribute("balance",dbBean.returnDatabaseField(username,"balance"));        
+            request.setAttribute("balance", dbBean.returnDatabaseField(username, "balance"));
             request.getRequestDispatcher("WEB-INF/withdrawBalance.jsp").forward(request, response);
         } //DEFAULT - CONN ERROR CALL IF THERE'S AN ERROR OR INVALID REDIRECT
         else {

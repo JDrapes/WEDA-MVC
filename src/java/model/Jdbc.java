@@ -17,6 +17,7 @@ import java.sql.Time;
 import static java.sql.Types.NULL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
@@ -139,6 +140,26 @@ public class Jdbc {
         }
         return bool;
     }
+    
+    //Check if user is allowed to make another claim
+    public boolean allowClaim(String username) throws SQLException{
+       //Must be member profile type
+       String membership = returnDatabaseField(username, "profiletype");
+       if(!membership.equals("customer")){
+           return false;
+       }
+       //Must have been reigstered for 6 months - dateofregistration
+       String registrationDate = returnDatabaseField(username, "dateofregistration");
+       LocalDate aDate = LocalDate.parse(registrationDate);
+       if(!aDate.isBefore(LocalDate.now().minusMonths(6))){
+           return false;
+       }
+
+       
+       //Max 2 claims a year - username+claimdate+claimstatus check
+        
+        return true;
+    }
 
     public boolean claimExists(String claimid) {
         boolean bool = false;
@@ -154,6 +175,50 @@ public class Jdbc {
         return bool;
     }
 
+    //Calculates the incomes for the business
+    public String calculateIncome() throws SQLException{
+        //Sum the paymentamout where cashdirection = to WEDA in payments
+        String result = "";
+        double incomeSum = 0;
+        select("select * from payments");
+        while (rs.next()) {
+            if(rs.getString("cashdirection").equals("Payment to WEDA")){
+                //Convert the  string to double and add it to income sum
+                Double value  = rs.getDouble("paymentamount");
+                incomeSum = incomeSum + value;
+            }
+        }
+        //have to cast back to String
+        String numberAsString = Double.toString(incomeSum);
+        return numberAsString;
+    }
+    //Calculates the outgoings for the business
+    public String calculateOutgoing() throws SQLException{
+        //Sum the paymentamount where cashdirection = from WEDA in payments
+        String result = "";
+        double incomeSum = 0;
+        select("select * from payments");
+        while (rs.next()) {
+            if(rs.getString("cashdirection").equals("Payment from WEDA")){
+                //Convert the  string to double and add it to income sum
+                Double value  = rs.getDouble("paymentamount");
+                incomeSum = incomeSum + value;
+            }
+        }
+        //Have to cast back to String
+        String numberAsString = Double.toString(incomeSum);
+        return numberAsString;
+    }
+    
+    public String calculateTurnover() throws SQLException{
+       //Gets income and outgoing, minuses them and returns String.
+       String income = calculateIncome();
+       String outgoing = calculateOutgoing(); 
+       Double incomeD = Double.parseDouble(income);
+       Double outgoingD = Double.parseDouble(outgoing);       
+       String numberAsString = Double.toString(incomeD-outgoingD);
+        return numberAsString;
+    }
     //This inserts the record to the database when registering on the register page
     public void insert(String[] str) {
         PreparedStatement ps = null;
@@ -414,11 +479,16 @@ public class Jdbc {
 
     }
 
-    public boolean submitClaimToDB(String[] str) {
+    public boolean submitClaimToDB(String[] str) throws SQLException {
         if (!validateStringToDouble(str[1])) {
             //invalid string to double returns false
             return false;
         }
+        
+        if(!allowClaim(str[0])){
+            return false;
+        }
+        
         PreparedStatement ps = null;
         try {
             //Get todays date for the date of registration

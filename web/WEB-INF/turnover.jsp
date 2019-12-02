@@ -7,7 +7,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Two-column fixed layout</title>
+        <title>West England Drivers Association</title>
         <link href="css/fixed-two-column.css" rel="stylesheet">
     </head>
     <body>
@@ -20,22 +20,20 @@
                     <jsp:include page="/WEB-INF/adminSidePanel.jsp"/> 
                 </div>
                 <div id="content">
-                    <h2>Annual Turnover</h2>
+                    <h2>Annual Turnover</h2>  
+                    <p>Net turnover - <%=(String) (request.getAttribute("netturnover"))%></p>
+                    <p>Yearly income - <%=(String) (request.getAttribute("incometransactions"))%></p>
+                    <p>Yearly outgoings - <%=(String) (request.getAttribute("outgoingtransactions"))%></p>
+                    
+                    
+                    
+                    <div>
+                        <h2>All transactions</h2>
+                    <%=(String) (request.getAttribute("alltransactions"))%>
 
-                    <div>
-                    <h2>Net Income</h2>  
-                    <p>Income here</p>
                     </div>
+           
                     
-                    <div>
-                    <h2>Income</h2>
-                    <p>Info here</p>
-                    </div>
-                    
-                    <div>
-                    <h2>Pay-outs</h2>
-                    <p>Info here</p>
-                    </div>
                 </div>
                 <div class="clearer"></div>
             </div>
