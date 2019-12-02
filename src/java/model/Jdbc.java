@@ -154,10 +154,18 @@ public class Jdbc {
        if(!aDate.isBefore(LocalDate.now().minusMonths(6))){
            return false;
        }
-
-       
        //Max 2 claims a year - username+claimdate+claimstatus check
-        
+       int succesfulClaims = 0;
+     
+       //Select all from claims where username=username AND claimstatus=paid&closed AND claimdate=this.year()
+       select("select COUNT (*) from claims WHERE username='"+ username + "' AND claimstatus='Approved and closed' AND year(claimdate)=2019");
+       while (rs.next()) {
+            succesfulClaims = rs.getInt(1);
+        }
+       
+       if(succesfulClaims>=2){
+           return false;
+       }     
         return true;
     }
 
@@ -376,6 +384,7 @@ public class Jdbc {
         }
         return result;
     }
+    
 
     public boolean validateStringToDouble(String check) {
         try {
