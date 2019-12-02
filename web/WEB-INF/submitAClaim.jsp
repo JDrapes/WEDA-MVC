@@ -17,6 +17,7 @@
                 <div id="content">
                     <h2>Submit a claim</h2>
                     <p>Please enter your claim amount and a description of why you are claiming</p>
+                    <p>You may only submit 2 claims per year. You must also be a member for 6 months to submit a claim</p>
                     <form method="POST" action="AdminService.do">
                         Claim amount: <input type="text" name="claimamount" value="<%=(String) (request.getAttribute("claimamount"))%>">
                         Claim description: <input type="text" name="claimdescription" value="<%=(String) (request.getAttribute("claimdescription"))%>">
