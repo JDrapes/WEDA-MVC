@@ -217,7 +217,7 @@ public class AdminServlet extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/processIndividualClaims.jsp").forward(request, response);
         } //Function to take you to the page to manage memberships.
         else if (request.getParameter("tbl").equals("Manage Memberships")) {
-            qry = "select username, profiletype from users";//Only want to put username and prof type in the table
+            qry = "select username, profiletype, outstandingbalance from users";//Only want to put username and prof type in the table
             String msg = "No users";
             try {
                 msg = dbBean.retrieve(qry);
@@ -225,40 +225,75 @@ public class AdminServlet extends HttpServlet {
                 Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             request.setAttribute("query", msg);
+            qry = "select username from users where profiletype='provisional' and outstandingbalance=0.0";//Only want to put username and prof type in the table
+            msg = "No users";
+            try {
+                msg = dbBean.retrieve(qry);
+                if (msg==null){
+                    msg="";
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            request.setAttribute("outstandingMembers",msg);
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
 
         } else if (request.getParameter("tbl").equals("Upgrade provisional member")) {
-            qry = "select username, profiletype from users";//Only want to put username and prof type in the table
+            qry = "select username, profiletype, outstandingbalance from users";//Only want to put username and prof type in the table
             String upgradeUser = (String) request.getParameter("userToUpgrade");
             dbBean.upgradeProvisionalToMember(upgradeUser);
             String msg = "No users";
             try {
                 msg = dbBean.retrieve(qry);
+                
             } catch (SQLException ex) {
                 Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             request.setAttribute("query", msg);
+            qry = "select username from users where profiletype='provisional' and outstandingbalance=0.0";//Only want to put username and prof type in the table
+            msg = "No users";
+            try {
+                msg = dbBean.retrieve(qry);
+                if (msg==null){
+                    msg="";
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            request.setAttribute("outstandingMembers",msg);
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
         } //Logic to suspend a membership
         else if (request.getParameter("tbl").equals("Suspend membership")) {
-            qry = "select username, profiletype from users";//Only want to put username and prof type in the table
+            qry = "select username, profiletype, outstandingbalance from users";//Only want to put username and prof type in the table
             String upgradeUser = (String) request.getParameter("userToUpgrade");
             dbBean.suspendMembership(upgradeUser);
             String msg = "No users";
             try {
                 msg = dbBean.retrieve(qry);
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }                     
+            request.setAttribute("query", msg);
+            qry = "select username from users where profiletype='provisional' and outstandingbalance=0.0";//Only want to put username and prof type in the table
+            msg = "No users";
+            try {
+                msg = dbBean.retrieve(qry);
+                if (msg==null){
+                    msg="";
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            request.setAttribute("query", msg);
+            request.setAttribute("outstandingMembers",msg);
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
 
         } //Logic to resume a suspended member
         else if (request.getParameter("tbl").equals("Resume membership")) {
-            qry = "select username, profiletype from users";//Only want to put username and prof type in the table
+            qry = "select username, profiletype,outstandingbalance from users";//Only want to put username and prof type in the table
             String upgradeUser = (String) request.getParameter("userToUpgrade");
             dbBean.resumeMembership(upgradeUser);
             String msg = "No users";
@@ -268,11 +303,22 @@ public class AdminServlet extends HttpServlet {
                 Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             request.setAttribute("query", msg);
+            qry = "select username from users where profiletype='provisional' and outstandingbalance=0.0";//Only want to put username and prof type in the table
+            msg = "No users";
+            try {
+                msg = dbBean.retrieve(qry);
+                if (msg==null){
+                    msg="";
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            request.setAttribute("outstandingMembers",msg);
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
 
         } else if (request.getParameter("tbl").equals("Delete a user")) {
-            qry = "select username, profiletype from users"; //Only want to put username and prof type in the table
+            qry = "select username, profiletype,outstandingbalance from users"; //Only want to put username and prof type in the table
             String upgradeUser = (String) request.getParameter("userToUpgrade");
             dbBean.deleteUser(upgradeUser);
             String msg = "No users";
@@ -282,6 +328,17 @@ public class AdminServlet extends HttpServlet {
                 Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             request.setAttribute("query", msg);
+            qry = "select username from users where profiletype='provisional' and outstandingbalance=0.0";//Only want to put username and prof type in the table
+            msg = "No users";
+            try {
+                msg = dbBean.retrieve(qry);
+                if (msg==null){
+                    msg="";
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            request.setAttribute("outstandingMembers",msg);
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
 

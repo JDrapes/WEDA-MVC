@@ -28,6 +28,9 @@
                         <input name="tbl" type="submit" id="signup" class="form-submit" value="Delete a user"/>
 
                     </form>
+                    
+                    <p>Below is a list of any provisional users who paid outstanding fees - admin should manually upgrade these</p>
+                    <%=(String) (request.getAttribute("outstandingMembers"))%>
                 </div>
                 <div class="clearer"></div>
             </div>

@@ -188,7 +188,7 @@ public class Jdbc {
         //Sum the paymentamout where cashdirection = to WEDA in payments
         String result = "";
         double incomeSum = 0;
-        select("select * from payments");
+        select("select * from payments where year(paymentdate)=2019");
         while (rs.next()) {
             if(rs.getString("cashdirection").equals("Payment to WEDA")){
                 //Convert the  string to double and add it to income sum
@@ -205,7 +205,7 @@ public class Jdbc {
         //Sum the paymentamount where cashdirection = from WEDA in payments
         String result = "";
         double incomeSum = 0;
-        select("select * from payments");
+        select("select * from payments where year(paymentdate)=2019");
         while (rs.next()) {
             if(rs.getString("cashdirection").equals("Payment from WEDA")){
                 //Convert the  string to double and add it to income sum
