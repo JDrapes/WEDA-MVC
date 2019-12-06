@@ -624,7 +624,7 @@ public class Jdbc {
             select("select * from users"); //Before changing to "customer" check that they are actually provisional
             while (rs.next()) {
                 if (rs.getString("username").equals(upgradeUser)) {
-                    if (rs.getString("profiletype").equals("provisional")) {
+                    if (rs.getString("profiletype").equals("provisional")&& rs.getString("outstandingbalance").equals("0.0")) {
                         //If user exists in database & is provisional then we can execute the statement.
                         ps.executeUpdate();
                         ps.close();
