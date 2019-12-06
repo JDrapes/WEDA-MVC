@@ -8,4 +8,4 @@
 <!DOCTYPE html>
 
 
-<a href="index.jsp"> Logout - back to index page </a>
+<a href="index.jsp"> back to home page</a>

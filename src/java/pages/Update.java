@@ -32,28 +32,35 @@ public class Update extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-       
-         HttpSession session = request.getSession(false);
-        
-        Jdbc jdbc = (Jdbc)session.getAttribute("dbbean"); 
-        if (jdbc == null)
+
+        HttpSession session = request.getSession(false);
+        //need to get the username from session and only allow the user to change their own username. 
+        String sessionUsername = (String) session.getAttribute("username");
+
+        Jdbc jdbc = (Jdbc) session.getAttribute("dbbean");
+        if (jdbc == null) {
             request.getRequestDispatcher("/WEB-INF/conErr.jsp").forward(request, response);
-        else {
-            String [] query = new String[3];
-        
-            query[0] = (String)request.getParameter("username");
-            query[1] = (String)request.getParameter("password");
-            query[2] = (String)request.getParameter("newpasswd");  
-            
-            if(!query[1].trim().equals(query[2].trim())) {
+        } else {
+            String[] query = new String[3];
+
+            query[0] = (String) request.getParameter("username");
+            query[1] = (String) request.getParameter("password");
+            query[2] = (String) request.getParameter("newpasswd");
+
+            if (!query[1].trim().equals(query[2].trim())) {
                 request.setAttribute("msg", "Your two passwords are not the same. </br> Please make sure you confirm the password</br>");
-                request.getRequestDispatcher("/WEB-INF/passwdChange.jsp").forward(request, response); 
-            }
-             else {
-                jdbc.update(query);
-                
-                request.setAttribute("msg", ""+query[0]+"'s passwd is changed</br>");
                 request.getRequestDispatcher("/WEB-INF/passwdChange.jsp").forward(request, response);
+            } else {
+                if (!query[0].equals(sessionUsername)) {
+                    request.setAttribute("msg", "You may only change your own password");
+                    request.getRequestDispatcher("/WEB-INF/passwdChange.jsp").forward(request, response);  
+                } else {
+                    jdbc.update(query);
+                   // request.setAttribute("provpassword", "Your password was updated succesfully.</br>");
+                    request.getRequestDispatcher("index.jsp").forward(request, response);
+
+                }
+
             }
         }
     }
