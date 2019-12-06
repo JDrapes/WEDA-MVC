@@ -430,7 +430,8 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("username", username);
             request.setAttribute("address", address);
             String amountToPay = (String) request.getParameter("amountToPay"); //get amount as string - function maniuplate it as double
-            if (dbBean.makePaymentFromCard(username, amountToPay)) {
+            String cardNumber = (String)request.getParameter("creditcardnumber"); //get card number as string
+            if (dbBean.makePaymentFromCard(username, amountToPay, cardNumber)) {
                 request.setAttribute("responseMessage", "Succesful payment, thank you!"); //
                 //PARAMETERS to add to payments table username, paymenttype, cashdirection, paymentamount
                 dbBean.insertPaymentToDB(username, "Paying outstanding balance", "Payment to WEDA", amountToPay);

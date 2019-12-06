@@ -21,9 +21,9 @@
                 </div>
                 <div id="content">
                     <h2>Annual Turnover</h2>  
-                    <p>Net turnover - <%=(String) (request.getAttribute("netturnover"))%></p>
-                    <p>Yearly income - <%=(String) (request.getAttribute("incometransactions"))%></p>
-                    <p>Yearly outgoings - <%=(String) (request.getAttribute("outgoingtransactions"))%></p>
+                    <p>Net turnover  £<%=(String) (request.getAttribute("netturnover"))%></p>
+                    <p>Yearly income  £<%=(String) (request.getAttribute("incometransactions"))%></p>
+                    <p>Yearly outgoings  £<%=(String) (request.getAttribute("outgoingtransactions"))%></p>
                     
                     
                     

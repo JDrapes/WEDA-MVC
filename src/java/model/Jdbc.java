@@ -140,32 +140,32 @@ public class Jdbc {
         }
         return bool;
     }
-    
+
     //Check if user is allowed to make another claim
-    public boolean allowClaim(String username) throws SQLException{
-       //Must be member profile type
-       String membership = returnDatabaseField(username, "profiletype");
-       if(!membership.equals("customer")){
-           return false;
-       }
-       //Must have been reigstered for 6 months - dateofregistration
-       String registrationDate = returnDatabaseField(username, "dateofregistration");
-       LocalDate aDate = LocalDate.parse(registrationDate);
-       if(!aDate.isBefore(LocalDate.now().minusMonths(6))){
-           return false;
-       }
-       //Max 2 claims a year - username+claimdate+claimstatus check
-       int succesfulClaims = 0;
-     
-       //Select all from claims where username=username AND claimstatus=paid&closed AND claimdate=this.year()
-       select("select COUNT (*) from claims WHERE username='"+ username + "' AND claimstatus='Approved and closed' AND year(claimdate)=2019");
-       while (rs.next()) {
+    public boolean allowClaim(String username) throws SQLException {
+        //Must be member profile type
+        String membership = returnDatabaseField(username, "profiletype");
+        if (!membership.equals("customer")) {
+            return false;
+        }
+        //Must have been reigstered for 6 months - dateofregistration
+        String registrationDate = returnDatabaseField(username, "dateofregistration");
+        LocalDate aDate = LocalDate.parse(registrationDate);
+        if (!aDate.isBefore(LocalDate.now().minusMonths(6))) {
+            return false;
+        }
+        //Max 2 claims a year - username+claimdate+claimstatus check
+        int succesfulClaims = 0;
+
+        //Select all from claims where username=username AND claimstatus=paid&closed AND claimdate=this.year()
+        select("select COUNT (*) from claims WHERE username='" + username + "' AND claimstatus='Approved and closed' AND year(claimdate)=2019");
+        while (rs.next()) {
             succesfulClaims = rs.getInt(1);
         }
-       
-       if(succesfulClaims>=2){
-           return false;
-       }     
+
+        if (succesfulClaims >= 2) {
+            return false;
+        }
         return true;
     }
 
@@ -184,15 +184,15 @@ public class Jdbc {
     }
 
     //Calculates the incomes for the business
-    public String calculateIncome() throws SQLException{
+    public String calculateIncome() throws SQLException {
         //Sum the paymentamout where cashdirection = to WEDA in payments
         String result = "";
         double incomeSum = 0;
         select("select * from payments where year(paymentdate)=2019");
         while (rs.next()) {
-            if(rs.getString("cashdirection").equals("Payment to WEDA")){
+            if (rs.getString("cashdirection").equals("Payment to WEDA")) {
                 //Convert the  string to double and add it to income sum
-                Double value  = rs.getDouble("paymentamount");
+                Double value = rs.getDouble("paymentamount");
                 incomeSum = incomeSum + value;
             }
         }
@@ -200,16 +200,17 @@ public class Jdbc {
         String numberAsString = Double.toString(incomeSum);
         return numberAsString;
     }
+
     //Calculates the outgoings for the business
-    public String calculateOutgoing() throws SQLException{
+    public String calculateOutgoing() throws SQLException {
         //Sum the paymentamount where cashdirection = from WEDA in payments
         String result = "";
         double incomeSum = 0;
         select("select * from payments where year(paymentdate)=2019");
         while (rs.next()) {
-            if(rs.getString("cashdirection").equals("Payment from WEDA")){
+            if (rs.getString("cashdirection").equals("Payment from WEDA")) {
                 //Convert the  string to double and add it to income sum
-                Double value  = rs.getDouble("paymentamount");
+                Double value = rs.getDouble("paymentamount");
                 incomeSum = incomeSum + value;
             }
         }
@@ -217,16 +218,17 @@ public class Jdbc {
         String numberAsString = Double.toString(incomeSum);
         return numberAsString;
     }
-    
-    public String calculateTurnover() throws SQLException{
-       //Gets income and outgoing, minuses them and returns String.
-       String income = calculateIncome();
-       String outgoing = calculateOutgoing(); 
-       Double incomeD = Double.parseDouble(income);
-       Double outgoingD = Double.parseDouble(outgoing);       
-       String numberAsString = Double.toString(incomeD-outgoingD);
+
+    public String calculateTurnover() throws SQLException {
+        //Gets income and outgoing, minuses them and returns String.
+        String income = calculateIncome();
+        String outgoing = calculateOutgoing();
+        Double incomeD = Double.parseDouble(income);
+        Double outgoingD = Double.parseDouble(outgoing);
+        String numberAsString = Double.toString(incomeD - outgoingD);
         return numberAsString;
     }
+
     //This inserts the record to the database when registering on the register page
     public void insert(String[] str) {
         PreparedStatement ps = null;
@@ -313,7 +315,7 @@ public class Jdbc {
         return false;
     }
 
-    public boolean withdrawCash(String username, String withdrawamount) throws SQLException{
+    public boolean withdrawCash(String username, String withdrawamount) throws SQLException {
         if (!validateStringToDouble(withdrawamount)) {
             //invalid string to double returns false
             return false;
@@ -324,23 +326,23 @@ public class Jdbc {
         Double currentBalance = Double.parseDouble(returnDatabaseField(username, "balance"));
         Double newBalance = 0.00;
         //Set their current balance = current balance - amount withdrawing as long as they can afford it 
-        if(currentBalance-amountWithdrawing>0){
-            newBalance = currentBalance-amountWithdrawing;
-        }       
+        if (currentBalance - amountWithdrawing > 0) {
+            newBalance = currentBalance - amountWithdrawing;
+        }
         //Need to put the new balance into the database and return true after the operation
         PreparedStatement ps = null;
-            try {
-                ps = connection.prepareStatement("Update Users Set balance=? where username=?", PreparedStatement.RETURN_GENERATED_KEYS);
-                ps.setDouble(1, newBalance);
-                ps.setString(2, username);
-                ps.executeUpdate();
-                ps.close();
-                System.out.println("1 rows updated.");
-            } catch (SQLException ex) {
-                Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
-            }               
-            //before returning true must add this to the payments table to track cashflow.
-             ps = null;
+        try {
+            ps = connection.prepareStatement("Update Users Set balance=? where username=?", PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setDouble(1, newBalance);
+            ps.setString(2, username);
+            ps.executeUpdate();
+            ps.close();
+            System.out.println("1 rows updated.");
+        } catch (SQLException ex) {
+            Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //before returning true must add this to the payments table to track cashflow.
+        ps = null;
         try {
             //Get todays date for the date of registration
             java.util.Date utilDate = new java.util.Date();
@@ -359,11 +361,10 @@ public class Jdbc {
         } catch (SQLException ex) {
             Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
         }
-            
-            
+
         return false;
     }
-    
+
     //Pass the parameter of username and the table column to return the individual record.
     //this is used on the profile page!
     public String returnDatabaseField(String username, String column) throws SQLException {
@@ -384,7 +385,6 @@ public class Jdbc {
         }
         return result;
     }
-    
 
     public boolean validateStringToDouble(String check) {
         try {
@@ -396,11 +396,16 @@ public class Jdbc {
         return false;
     }
 
-    public boolean makePaymentFromCard(String username, String amountToPay) throws SQLException {
+    public boolean makePaymentFromCard(String username, String amountToPay, String cardNumber) throws SQLException {
         if (!validateStringToDouble(amountToPay)) {
             //invalid string to double returns false
             return false;
         }
+        //Performs checks if the card is real. LUHN check.
+        if(!validateCreditCard.validateCard(cardNumber)){
+            return false;
+        }
+        
         //Convert the string amount into a double to work with the database
         Double AmountPaying = Double.parseDouble(amountToPay);
         Double outstandingBalance = Double.parseDouble(returnDatabaseField(username, "outstandingbalance"));
@@ -493,11 +498,11 @@ public class Jdbc {
             //invalid string to double returns false
             return false;
         }
-        
-        if(!allowClaim(str[0])){
+
+        if (!allowClaim(str[0])) {
             return false;
         }
-        
+
         PreparedStatement ps = null;
         try {
             //Get todays date for the date of registration

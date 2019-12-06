@@ -17,13 +17,13 @@
                 <div id="content">
                     <h2>Make a Payment</h2>
                     <p>Please make sure to pay your outstanding balances on time otherwise your account may be deactivated!</p>
-
+                     <form action="AdminService.do" method="POST">
                     Outstanding Balance <input type="text" name="outstandingbalance" value="<%=(String) (request.getAttribute("outstandingbalance"))%>">
                     Credit Card Number <input type="text" name="creditcardnumber" value="">
                     Expiry Date <input type="text" name="expirydate" value="">
                     Billing Address <input type="text" name="address" value="<%=(String) (request.getAttribute("address"))%>">
 
-                    <form action="AdminService.do" method="POST">
+                    
                         <input type="text" name="amountToPay" id="amountToPay" placeholder="You are paying: "/>
                         <input name="tbl" type="submit" id="signup" class="form-submit" value="Pay with card"/>
                         <input name="tbl" type="submit" id="signup" class="form-submit" value="Pay with existing balance"/>
