@@ -229,13 +229,13 @@ public class AdminServlet extends HttpServlet {
             msg = "No users";
             try {
                 msg = dbBean.retrieve(qry);
-                if (msg==null){
-                    msg="";
+                if (msg == null) {
+                    msg = "";
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            request.setAttribute("outstandingMembers",msg);
+            request.setAttribute("outstandingMembers", msg);
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
 
@@ -246,7 +246,7 @@ public class AdminServlet extends HttpServlet {
             String msg = "No users";
             try {
                 msg = dbBean.retrieve(qry);
-                
+
             } catch (SQLException ex) {
                 Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -255,13 +255,13 @@ public class AdminServlet extends HttpServlet {
             msg = "No users";
             try {
                 msg = dbBean.retrieve(qry);
-                if (msg==null){
-                    msg="";
+                if (msg == null) {
+                    msg = "";
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            request.setAttribute("outstandingMembers",msg);
+            request.setAttribute("outstandingMembers", msg);
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
         } //Logic to suspend a membership
@@ -272,22 +272,22 @@ public class AdminServlet extends HttpServlet {
             String msg = "No users";
             try {
                 msg = dbBean.retrieve(qry);
-                
+
             } catch (SQLException ex) {
                 Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }                     
+            }
             request.setAttribute("query", msg);
             qry = "select username from users where profiletype='provisional' and outstandingbalance=0.0";//Only want to put username and prof type in the table
             msg = "No users";
             try {
                 msg = dbBean.retrieve(qry);
-                if (msg==null){
-                    msg="";
+                if (msg == null) {
+                    msg = "";
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            request.setAttribute("outstandingMembers",msg);
+            request.setAttribute("outstandingMembers", msg);
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
 
@@ -307,13 +307,13 @@ public class AdminServlet extends HttpServlet {
             msg = "No users";
             try {
                 msg = dbBean.retrieve(qry);
-                if (msg==null){
-                    msg="";
+                if (msg == null) {
+                    msg = "";
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            request.setAttribute("outstandingMembers",msg);
+            request.setAttribute("outstandingMembers", msg);
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
 
@@ -332,15 +332,51 @@ public class AdminServlet extends HttpServlet {
             msg = "No users";
             try {
                 msg = dbBean.retrieve(qry);
-                if (msg==null){
-                    msg="";
+                if (msg == null) {
+                    msg = "";
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(AdminServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-            request.setAttribute("outstandingMembers",msg);
+            request.setAttribute("outstandingMembers", msg);
             request.setAttribute("username", username);
             request.getRequestDispatcher("/WEB-INF/upgradeMembers.jsp").forward(request, response);
+
+        } else if (request.getParameter("tbl").equals("Lookup user")) {
+            request.setAttribute("username", username);
+            request.setAttribute("lookupemail", "");
+            request.setAttribute("lookupusername", "");
+            request.setAttribute("lookupfullname", "");
+            request.setAttribute("lookupprofiletype", "");
+            request.setAttribute("lookupdob", "");
+            request.setAttribute("lookupdateofregistration", "");
+            request.setAttribute("lookupoutstandingbalance", "");
+            request.setAttribute("lookupbalance", "");
+            request.setAttribute("lookupaddress", "");
+
+            request.getRequestDispatcher("/WEB-INF/lookupUser.jsp").forward(request, response);
+            //Show user info
+        } else if (request.getParameter("tbl").equals("Show user information")) {
+            request.setAttribute("username", username);
+            //Get the user input and store as String
+            String lookupemail = (String) request.getParameter("lookupemail");
+            request.setAttribute("lookupemail", lookupemail);
+            //Need to get all the other fields from DB
+            String lookupfullname = dbBean.returnDatabaseField(lookupemail, "fullname");
+            request.setAttribute("lookupfullname", lookupfullname);
+            String lookupprofiletype = dbBean.returnDatabaseField(lookupemail, "profiletype");
+            request.setAttribute("lookupprofiletype", lookupprofiletype);
+            String lookupdob = dbBean.returnDatabaseField(lookupemail, "dateofbirth");
+            request.setAttribute("lookupdob", lookupdob);
+            String lookupdateofregistration = dbBean.returnDatabaseField(lookupemail, "dateofregistration");
+            request.setAttribute("lookupdateofregistration", lookupdateofregistration);
+            String lookupoutstandingbalance = dbBean.returnDatabaseField(lookupemail, "outstandingbalance");
+            request.setAttribute("lookupoutstandingbalance", lookupoutstandingbalance);
+            String lookupbalance = dbBean.returnDatabaseField(lookupemail, "balance");
+            request.setAttribute("lookupbalance", lookupbalance);
+            String lookupaddress = dbBean.returnDatabaseField(lookupemail, "address");
+            request.setAttribute("lookupaddress", lookupaddress);
+            request.getRequestDispatcher("/WEB-INF/lookupUser.jsp").forward(request, response);
 
         } //When updating profile page need to update details and redirect back to admin/user panel
         else if (request.getParameter("tbl").equals("Update profile details")) {
@@ -385,11 +421,11 @@ public class AdminServlet extends HttpServlet {
             String outgoing = dbBean.calculateOutgoing();
             String netturnover = dbBean.calculateTurnover();
             request.setAttribute("netturnover", netturnover);
-            request.setAttribute("incometransactions",income);
-            request.setAttribute("outgoingtransactions",outgoing);
+            request.setAttribute("incometransactions", income);
+            request.setAttribute("outgoingtransactions", outgoing);
             request.setAttribute("alltransactions", msg);
             request.getRequestDispatcher("/WEB-INF/turnover.jsp").forward(request, response);
-                    
+
         } //CUSTOMER FUNCTIONALITY
         //Check outstanding balance
         else if (request.getParameter("tbl").equals("Check outstanding balance")) {
@@ -430,7 +466,7 @@ public class AdminServlet extends HttpServlet {
             request.setAttribute("username", username);
             request.setAttribute("address", address);
             String amountToPay = (String) request.getParameter("amountToPay"); //get amount as string - function maniuplate it as double
-            String cardNumber = (String)request.getParameter("creditcardnumber"); //get card number as string
+            String cardNumber = (String) request.getParameter("creditcardnumber"); //get card number as string
             if (dbBean.makePaymentFromCard(username, amountToPay, cardNumber)) {
                 request.setAttribute("responseMessage", "Succesful payment, thank you!"); //
                 //PARAMETERS to add to payments table username, paymenttype, cashdirection, paymentamount

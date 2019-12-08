@@ -46,6 +46,8 @@
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Process individual claims"/>
                         <!-- Annual turnover including total income and total pay-outs --> 
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Annual turnover"/>
+                        <!-- Lookup a user --> 
+                        <input name="tbl" type="submit" class="btn btn-secondary" value="Lookup user"/>
                         <!-- Change your password  --> 
                         <input name="tbl" type="submit" class="btn btn-secondary" value="Change my password"/>
                     </form>

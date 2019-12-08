@@ -17,6 +17,7 @@
                 <div id="content">
                     <h2>Listing all members</h2>
                     <%=(String) (request.getAttribute("query"))%>
+                    
                 </div>
                 <div class="clearer"></div>
             </div>
