@@ -24,7 +24,6 @@
 
                         <div>
                             Email: <input type="text" name="lookupemail" value="<%=(String) (request.getAttribute("lookupemail"))%>"readonly>                           
-                            Username <input type="text" name="lookupusername" value="<%=(String) (request.getAttribute("lookupusername"))%>"readonly>
                             Full name: <input type="text" name="lookupfullname" value="<%=(String) (request.getAttribute("lookupfullname"))%>"readonly>
                             Profile Type: <input type="text" name="lookupprofiletype" value="<%=(String) (request.getAttribute("lookupprofiletype"))%>"readonly>
                             Date of Birth: <input type="text" name="lookupdob" value="<%=(String) (request.getAttribute("lookupdob"))%>"readonly>
