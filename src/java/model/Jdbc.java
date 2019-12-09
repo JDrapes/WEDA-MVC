@@ -402,10 +402,10 @@ public class Jdbc {
             return false;
         }
         //Performs checks if the card is real. LUHN check.
-        if(!validateCreditCard.validateCard(cardNumber)){
+        if (!validateCreditCard.validateCard(cardNumber)) {
             return false;
         }
-        
+
         //Convert the string amount into a double to work with the database
         Double AmountPaying = Double.parseDouble(amountToPay);
         Double outstandingBalance = Double.parseDouble(returnDatabaseField(username, "outstandingbalance"));
@@ -476,6 +476,37 @@ public class Jdbc {
         } else {
             //User cannot afford the payment they tried to make.
             return false;
+        }
+        return false;
+    }
+
+    //Function to send bill to members (as admin)
+    public boolean billMembers(String amounttobill) throws SQLException {
+        if (!validateStringToDouble(amounttobill)) {
+            //invalid string to double returns false
+            return false;
+        }
+        //Turn string to double 
+        double billamount = Double.parseDouble(amounttobill);
+        //Select * from users where profiletype=customer
+        String profile = "customer";
+        select("select * from users where profiletype='" + profile + "'");
+        while (rs.next()) {
+            Double temp = rs.getDouble("outstandingbalance");
+            String username = rs.getString("username");
+            double outstandingbalance = billamount + temp;
+            //Need to them push outstanding balance back to the record based on the username
+            PreparedStatement ps = null;
+            try {
+                ps = connection.prepareStatement("Update Users Set outstandingbalance=? where username=?", PreparedStatement.RETURN_GENERATED_KEYS);
+                ps.setString(2, username); //Username
+                ps.setDouble(1, outstandingbalance); //Outstanding balance
+                ps.executeUpdate();
+                ps.close();
+                System.out.println("1 rows updated.");
+            } catch (SQLException ex) {
+                Logger.getLogger(Jdbc.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return false;
     }
@@ -624,7 +655,7 @@ public class Jdbc {
             select("select * from users"); //Before changing to "customer" check that they are actually provisional
             while (rs.next()) {
                 if (rs.getString("username").equals(upgradeUser)) {
-                    if (rs.getString("profiletype").equals("provisional")&& rs.getString("outstandingbalance").equals("0.0")) {
+                    if (rs.getString("profiletype").equals("provisional") && rs.getString("outstandingbalance").equals("0.0")) {
                         //If user exists in database & is provisional then we can execute the statement.
                         ps.executeUpdate();
                         ps.close();

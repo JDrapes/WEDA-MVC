@@ -24,16 +24,16 @@
                     <p>Net turnover  £<%=(String) (request.getAttribute("netturnover"))%></p>
                     <p>Yearly income  £<%=(String) (request.getAttribute("incometransactions"))%></p>
                     <p>Yearly outgoings  £<%=(String) (request.getAttribute("outgoingtransactions"))%></p>
-                    
-                    
-                    
-                    <div>
+        
+                    <form method="POST" action="AdminService.do">           
+                            Enter an amount to bill to all members: <input type="text" name="amounttobill" value="">
+                            <input name="tbl" type="submit" id="signup" class="form-submit" value="Send bill"/>  
+                    <div>                     
                         <h2>All transactions</h2>
-                    <%=(String) (request.getAttribute("alltransactions"))%>
+                        <%=(String) (request.getAttribute("alltransactions"))%>
 
-                    </div>
-           
-                    
+                    </div>                      
+
                 </div>
                 <div class="clearer"></div>
             </div>
